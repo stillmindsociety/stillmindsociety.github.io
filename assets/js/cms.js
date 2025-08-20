@@ -112,14 +112,22 @@ class RealTimeCMS {
       onSnapshot(docRef, (doc) => {
         if (doc.exists()) {
           const data = doc.data();
-          this.handleRemoteUpdate(data.content || {});
+          const content = data.content || {};
 
-          // Show update notification to non-admin users
-          if (!this.isAuthenticated) {
-            this.showUpdateIndicator();
+          // Only apply updates if they're newer than our last save
+          const lastModified = data.timestamp || 0;
+          const ourLastSave = parseInt(localStorage.getItem(`sms-${this.currentPage}-lastSave`) || '0');
+
+          if (lastModified > ourLastSave) {
+            this.handleRemoteUpdate(content);
+            localStorage.setItem(`sms-${this.currentPage}-lastSave`, lastModified.toString());
           }
         }
+      }, (error) => {
+        console.error('Firebase sync error:', error);
+        this.setupDemoAPI(); // Fallback to BroadcastChannel
       });
+
     } catch (error) {
       console.warn('Firebase real-time sync not available, using fallback');
       this.setupDemoAPI();
@@ -212,14 +220,11 @@ class RealTimeCMS {
         this.originalContent[field] = el.innerHTML;
         el.contentEditable = true;
         el.classList.add('editable-active');
-
-        // Add real-time input listener
-        this.addInputListener(el);
       });
 
       // Show edit indicators
       this.showEditIndicators(editables);
-      this.showSuccessMessage('Edit mode activated! Changes will auto-save.');
+      this.showSuccessMessage('Edit mode activated! Make your changes and click "Save Changes" to save.');
     } else {
       body.classList.remove('cms-mode-active');
       toolbar.classList.remove('active');
@@ -227,7 +232,6 @@ class RealTimeCMS {
       editables.forEach(el => {
         el.contentEditable = false;
         el.classList.remove('editable-active');
-        this.removeInputListener(el);
       });
 
       this.hideEditIndicators(editables);
@@ -253,33 +257,21 @@ class RealTimeCMS {
   }
 
   addInputListener(element) {
-    const field = element.dataset.field;
-
-    // Debounced save function
-    const debouncedSave = this.debounce(() => {
-      this.saveField(field, element.innerHTML);
-    }, 1000);
-
-    const inputHandler = () => {
-      debouncedSave();
-    };
-
-    element.addEventListener('input', inputHandler);
-    this.listeners.set(field, inputHandler);
+    // Remove auto-save functionality - no longer adding input listeners
+    // Content will only save when user clicks "Save Changes" button
   }
 
   removeInputListener(element) {
-    const field = element.dataset.field;
-    const handler = this.listeners.get(field);
-    if (handler) {
-      element.removeEventListener('input', handler);
-      this.listeners.delete(field);
-    }
+    // Remove auto-save functionality - no longer removing input listeners
+    // since we're not adding them in the first place
   }
 
   async saveField(field, content) {
     try {
-      // Save to remote database (or localStorage as fallback)
+      const timestamp = Date.now();
+      localStorage.setItem(`sms-${this.currentPage}-lastSave`, timestamp.toString());
+
+      // Save to remote database
       await this.saveToRemote(field, content);
 
       // Broadcast change to other tabs/users
@@ -288,7 +280,8 @@ class RealTimeCMS {
           type: 'content-update',
           page: this.currentPage,
           changes: { [field]: content },
-          timestamp: Date.now()
+          timestamp: timestamp,
+          author: localStorage.getItem('sms-admin-email')
         });
       }
 
@@ -304,30 +297,36 @@ class RealTimeCMS {
   async saveToRemote(field, content) {
     const key = `sms-${this.currentPage}-content`;
 
-    // Get existing content
-    const existingContent = JSON.parse(localStorage.getItem(key) || '{}');
-    existingContent[field] = content;
+    try {
+      // Get existing content
+      const existingContent = JSON.parse(localStorage.getItem(key) || '{}');
+      existingContent[field] = content;
 
-    // Save to localStorage (in production, this would be Firebase Firestore)
-    localStorage.setItem(key, JSON.stringify(existingContent));
+      // Save to localStorage first (immediate backup)
+      localStorage.setItem(key, JSON.stringify(existingContent));
 
-    // If Firebase is available, also save to Firestore
-    if (this.db && this.isAuthenticated) {
-      try {
+      // If Firebase is available, save to Firestore
+      if (this.db && this.isAuthenticated) {
         const { doc, setDoc } = await import('https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js');
         const docRef = doc(this.db, 'content', this.currentPage);
+
         await setDoc(docRef, {
           content: existingContent,
-          lastModified: new Date(),
-          modifiedBy: localStorage.getItem('sms-admin-email')
+          lastModified: new Date().toISOString(),
+          modifiedBy: localStorage.getItem('sms-admin-email'),
+          timestamp: Date.now()
         }, { merge: true });
-      } catch (error) {
-        console.error('Failed to save to Firestore:', error);
-      }
-    }
 
-    // Simulate API delay
-    await new Promise(resolve => setTimeout(resolve, 100));
+        console.log('Content saved to Firebase successfully');
+      }
+
+      // Simulate API delay
+      await new Promise(resolve => setTimeout(resolve, 100));
+
+    } catch (error) {
+      console.error('Failed to save content:', error);
+      throw error;
+    }
   }
 
   async savePage() {
@@ -415,9 +414,18 @@ class RealTimeCMS {
   }
 
   handleRemoteUpdate(changes) {
+    // Don't apply changes if we're currently in edit mode to prevent conflicts
+    if (this.cmsMode) {
+      return;
+    }
+
     // Apply changes from other users
     this.applyChanges(changes);
-    this.showUpdateIndicator();
+
+    // Only show update notification to non-admin users
+    if (!this.isAuthenticated) {
+      this.showUpdateIndicator();
+    }
   }
 
   showEditIndicators(editables) {
@@ -509,35 +517,44 @@ class RealTimeCMS {
     toast.textContent = message;
     toast.style.cssText = `
       position: fixed;
-      top: 20px;
-      right: 20px;
+      bottom: 20px;
+      left: 50%;
+      transform: translateX(-50%) translateY(100%);
       background: ${type === 'error' ? '#ff4444' : type === 'success' ? '#44ff44' : 'var(--accent)'};
       color: ${type === 'error' || type === 'success' ? '#000' : 'var(--bg)'};
       padding: 12px 20px;
       border-radius: 8px;
-      font-weight: 500;
-      z-index: 1002;
-      transform: translateX(100%);
-      transition: transform 0.3s ease;
-      max-width: 300px;
+      font-size: 14px;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+      z-index: 10000;
+      opacity: 0;
+      transition: all 0.3s ease;
+      white-space: nowrap;
     `;
 
     document.body.appendChild(toast);
 
     // Animate in
-    setTimeout(() => toast.style.transform = 'translateX(0)', 10);
+    setTimeout(() => {
+      toast.style.opacity = '1';
+      toast.style.transform = 'translateX(-50%) translateY(0)';
+    }, 10);
 
     // Remove after delay
     setTimeout(() => {
-      toast.style.transform = 'translateX(100%)';
-      setTimeout(() => {
-        if (toast.parentNode) {
-          toast.parentNode.removeChild(toast);
-        }
-      }, 300);
-    }, 3000);
+      if (toast.parentNode) {
+        toast.style.opacity = '0';
+        toast.style.transform = 'translateX(-50%) translateY(100%)';
+        setTimeout(() => {
+          if (toast.parentNode) {
+            toast.parentNode.removeChild(toast);
+          }
+        }, 300);
+      }
+    }, 4000);
   }
 
+  // Utility method for debouncing
   debounce(func, wait) {
     let timeout;
     return function executedFunction(...args) {
@@ -552,55 +569,11 @@ class RealTimeCMS {
 }
 
 // Initialize CMS when DOM is ready
-let cmsInstance = null;
-
-function toggleCMSMode() {
-  if (!cmsInstance) {
-    cmsInstance = new RealTimeCMS();
-  }
-  cmsInstance.toggleCMSMode();
-}
-
-function savePage() {
-  if (cmsInstance) {
-    cmsInstance.savePage();
-  }
-}
-
-function resetPage() {
-  if (cmsInstance) {
-    cmsInstance.resetPage();
-  }
-}
-
-// Initialize on page load
-document.addEventListener('DOMContentLoaded', function() {
-  cmsInstance = new RealTimeCMS();
-
-  // Update navigation highlighting
-  const navLinks = document.querySelectorAll('.nav-links a');
-  const currentPage = window.location.pathname.split('/').pop() || 'index.html';
-
-  navLinks.forEach(link => {
-    const href = link.getAttribute('href');
-    if (href === currentPage || (currentPage === '' && href === 'index.html')) {
-      link.setAttribute('aria-current', 'page');
-    }
-  });
+document.addEventListener('DOMContentLoaded', () => {
+  window.cms = new RealTimeCMS();
 });
 
-// Keyboard shortcuts
-document.addEventListener('keydown', function(e) {
-  if (e.ctrlKey || e.metaKey) {
-    if (e.key === 'e') {
-      e.preventDefault();
-      toggleCMSMode();
-    } else if (e.key === 's' && cmsInstance && cmsInstance.cmsMode) {
-      e.preventDefault();
-      savePage();
-    }
-  }
-});
-
-// Export for use in other scripts
-window.RealTimeCMS = RealTimeCMS;
+// Export for use in other modules
+if (typeof module !== 'undefined' && module.exports) {
+  module.exports = RealTimeCMS;
+}
