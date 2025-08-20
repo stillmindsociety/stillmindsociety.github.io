@@ -364,30 +364,6 @@ a:focus-visible {
   box-shadow: 0 0 0 2px var(--accent);
 }
 
-.editable-hint {
-  position: relative;
-}
-
-.editable-hint::after {
-  content: "✏️ Click to edit";
-  position: absolute;
-  top: -30px;
-  left: 0;
-  font-size: 12px;
-  color: var(--accent);
-  opacity: 0;
-  transition: opacity var(--transition-fast);
-  pointer-events: none;
-  background: var(--bg);
-  padding: 4px 8px;
-  border-radius: 4px;
-  border: 1px solid var(--border);
-}
-
-.editable-hint:hover::after {
-  opacity: 1;
-}
-
 /* Enhanced Content Areas */
 .text-content {
   max-width: var(--content-max-width);
@@ -861,7 +837,7 @@ a:focus-visible {
   border-radius: 50%;
   width: 20px;
   height: 20px;
-  display: flex;
+  display: none; /* Hidden by default */
   align-items: center;
   justify-content: center;
   font-size: 12px;
@@ -870,276 +846,16 @@ a:focus-visible {
   pointer-events: none;
 }
 
-.editable:hover .edit-indicator {
+/* Only show edit indicators in CMS mode */
+.cms-mode-active .edit-indicator {
+  display: flex;
+}
+
+.cms-mode-active .editable:hover .edit-indicator {
   opacity: 1;
 }
 
-/* Color Palette Display Enhancement */
-.color-palette {
-  display: flex;
-  gap: var(--space-lg);
-  justify-content: center;
-  flex-wrap: wrap;
-  margin: var(--space-2xl) 0;
-}
-
-.color-chip {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: var(--space-md);
-  transition: transform var(--transition-fast);
-}
-
-.color-chip:hover {
-  transform: scale(1.1);
-}
-
-.color-chip__swatch {
-  width: 80px;
-  height: 80px;
-  border-radius: 50%;
-  border: 3px solid var(--border);
-  transition: all var(--transition-smooth);
-  box-shadow: var(--shadow-md);
-}
-
-.color-chip:hover .color-chip__swatch {
-  box-shadow: var(--shadow-xl);
-  border-color: var(--accent);
-}
-
-.color-chip__label {
-  font-size: var(--font-size-sm);
-  text-align: center;
-  font-weight: 500;
-}
-
-.color-chip--cyber-purple .color-chip__swatch {
-  background: var(--color-cyber-purple);
-}
-
-.color-chip--neon-lime .color-chip__swatch {
-  background: var(--color-neon-lime);
-}
-
-.color-chip--bone-white .color-chip__swatch {
-  background: var(--color-bone-white);
-}
-
-.color-chip--charcoal .color-chip__swatch {
-  background: var(--color-charcoal);
-}
-
-/* Enhanced Team Cards */
-.team-card {
-  text-align: center;
-  transition: all var(--transition-smooth);
-}
-
-.team-card:hover {
-  transform: translateY(-8px);
-}
-
-.team-card__avatar {
-  width: 140px;
-  height: 140px;
-  border-radius: 50%;
-  background: linear-gradient(135deg, var(--accent), var(--accent-2));
-  margin: 0 auto var(--space-xl);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  font-size: var(--font-size-3xl);
-  font-weight: 700;
-  color: var(--bg);
-  box-shadow: var(--shadow-lg);
-  transition: all var(--transition-smooth);
-}
-
-.team-card:hover .team-card__avatar {
-  box-shadow: var(--shadow-glow-lg);
-  transform: scale(1.05);
-}
-
-.team-card__name {
-  font-size: var(--font-size-xl);
-  margin-bottom: var(--space-sm);
-  font-weight: 600;
-}
-
-.team-card__role {
-  color: var(--accent);
-  font-weight: 500;
-  margin-bottom: var(--space-lg);
-  font-size: var(--font-size-lg);
-}
-
-/* Enhanced Forms */
-.form-group {
-  margin-bottom: var(--space-xl);
-}
-
-.form-label {
-  display: block;
-  margin-bottom: var(--space-sm);
-  font-weight: 500;
-  color: var(--text);
-}
-
-.form-input,
-.form-textarea {
-  width: 100%;
-  padding: var(--space-lg);
-  border: 2px solid var(--border);
-  border-radius: var(--border-radius);
-  background: var(--surface);
-  color: var(--text);
-  font-family: inherit;
-  font-size: var(--font-size-base);
-  transition: all var(--transition-fast);
-}
-
-.form-input:focus,
-.form-textarea:focus {
-  outline: none;
-  border-color: var(--accent);
-  box-shadow: 0 0 0 3px rgba(157, 0, 255, 0.2);
-  background: var(--surface-elevated);
-}
-
-.form-textarea {
-  resize: vertical;
-  min-height: 140px;
-}
-
-/* Enhanced Footer */
-.footer {
-  border-top: 1px solid var(--border);
-  padding: var(--space-4xl) 0 var(--space-2xl);
-  margin-top: var(--space-5xl);
-  background: var(--surface);
-  position: relative;
-}
-
-.footer::before {
-  content: '';
-  position: absolute;
-  top: 0;
-  left: 0;
-  right: 0;
-  height: 1px;
-  background: linear-gradient(90deg, transparent, var(--accent), transparent);
-  opacity: 0.5;
-}
-
-.footer__content {
-  display: grid;
-  gap: var(--space-3xl);
-  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-  margin-bottom: var(--space-3xl);
-}
-
-.footer__section h3 {
-  margin-bottom: var(--space-xl);
-  color: var(--accent);
-  font-size: var(--font-size-lg);
-}
-
-.footer__links {
-  list-style: none;
-}
-
-.footer__links li {
-  margin-bottom: var(--space-md);
-}
-
-.footer__links a {
-  transition: all var(--transition-fast);
-  padding: var(--space-xs) 0;
-  display: inline-block;
-}
-
-.footer__links a:hover {
-  transform: translateX(4px);
-}
-
-.footer__bottom {
-  border-top: 1px solid var(--border);
-  padding-top: var(--space-xl);
-  text-align: center;
-  opacity: 0.7;
-  font-size: var(--font-size-sm);
-}
-
-/* Enhanced Modal */
-.modal {
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  background: rgba(0, 0, 0, 0.9);
-  backdrop-filter: blur(10px);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  z-index: 1000;
-  opacity: 0;
-  visibility: hidden;
-  transition: all var(--transition-smooth);
-}
-
-.modal.open {
-  opacity: 1;
-  visibility: visible;
-}
-
-.modal__content {
-  background: var(--bg);
-  border: 2px solid var(--border);
-  border-radius: var(--border-radius-xl);
-  padding: var(--space-3xl);
-  max-width: 700px;
-  max-height: 85vh;
-  overflow-y: auto;
-  position: relative;
-  box-shadow: var(--shadow-xl);
-  transform: scale(0.9);
-  transition: transform var(--transition-smooth);
-}
-
-.modal.open .modal__content {
-  transform: scale(1);
-}
-
-.modal__close {
-  position: absolute;
-  top: var(--space-lg);
-  right: var(--space-lg);
-  background: var(--surface);
-  border: 2px solid var(--border);
-  color: var(--text);
-  font-size: 1.25rem;
-  cursor: pointer;
-  padding: var(--space-sm);
-  border-radius: 50%;
-  width: 40px;
-  height: 40px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  transition: all var(--transition-fast);
-}
-
-.modal__close:hover {
-  background: var(--accent);
-  border-color: var(--accent);
-  color: var(--bg);
-  transform: scale(1.1);
-}
-
-/* Content Management System Styles */
+/* Enhanced CMS Styles */
 .cms-toolbar {
   position: fixed;
   top: 20px;
@@ -1150,7 +866,7 @@ a:focus-visible {
   padding: var(--space-lg);
   box-shadow: var(--shadow-xl);
   z-index: 999;
-  display: none;
+  display: none; /* Hidden by default */
 }
 
 .cms-toolbar.active {
@@ -1172,6 +888,7 @@ a:focus-visible {
   box-shadow: var(--shadow-xl);
   transition: all var(--transition-fast);
   z-index: 1000;
+  display: none; /* Hidden by default for normal users */
 }
 
 .cms-toggle:hover {
@@ -1180,11 +897,39 @@ a:focus-visible {
   box-shadow: var(--shadow-glow);
 }
 
+/* Only show CMS controls when user is authenticated */
+.cms-authenticated .cms-toggle {
+  display: block;
+}
+
+.cms-authenticated .cms-toolbar.active {
+  display: block;
+}
+
+/* Hide all editable styling for normal users */
+.editable {
+  position: relative;
+  transition: all var(--transition-fast);
+  border-radius: var(--border-radius);
+}
+
+/* Only show editable styling in CMS mode */
 .cms-mode-active .editable {
   border: 2px dashed rgba(157, 0, 255, 0.4);
   padding: var(--space-sm);
   margin: var(--space-xs);
   position: relative;
+}
+
+.cms-mode-active .editable:hover {
+  background: rgba(157, 0, 255, 0.05);
+  box-shadow: 0 0 0 2px rgba(157, 0, 255, 0.2);
+}
+
+.cms-mode-active .editable[contenteditable="true"] {
+  background: rgba(157, 0, 255, 0.1);
+  box-shadow: 0 0 0 2px var(--accent);
+  outline: none;
 }
 
 .cms-mode-active .editable::after {
