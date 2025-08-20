@@ -20,34 +20,116 @@
 
   <div data-include="assets/reusables/header.html"></div>
 
+  <!-- CMS Toggle Button -->
+  <button class="cms-toggle" onclick="toggleCMSMode()" title="Toggle Edit Mode">✏️</button>
+
+  <!-- CMS Toolbar -->
+  <div class="cms-toolbar" id="cms-toolbar">
+    <h4>Edit Mode</h4>
+    <button onclick="savePage()" class="btn btn--primary btn--sm">Save Changes</button>
+    <button onclick="resetPage()" class="btn btn--subtle btn--sm">Reset</button>
+  </div>
+
   <main id="main" role="main">
-    <section class="section section--hero">
+    <!-- 404 Hero Section -->
+    <section class="section section--hero section--spacious">
       <div class="container">
         <div class="hero text-center">
-          <h1 class="hero__title text-balance">404: A Moment of Pause</h1>
-          <p class="hero__subtitle text-balance">
-            The page you're looking for doesn't exist. But perhaps this unexpected pause is exactly what you needed. Sometimes the best discoveries happen when we're not actively searching.
+          <h1 class="hero__title text-balance editable" contenteditable="false" data-field="404-title">
+            A Mindful Pause
+          </h1>
+          <p class="hero__subtitle text-balance editable" contenteditable="false" data-field="404-subtitle">
+            The page you're looking for doesn't exist. But perhaps this unexpected pause is exactly what you needed. Take a moment to breathe, then explore what we have to offer.
           </p>
+          <div class="cluster hero__actions">
+            <a href="index.html" class="btn btn--primary">Return Home</a>
+            <a href="about.html" class="btn btn--accent">Learn About Us</a>
+          </div>
+        </div>
+      </div>
+    </section>
 
-          <div class="card" style="max-width: 500px; margin: var(--space-2xl) auto;">
-            <h2>Embrace the Unexpected</h2>
-            <p>Instead of rushing back to what you were doing, why not take this moment to explore something new? Or better yet, step away from the screen entirely.</p>
+    <!-- Zen Message Section -->
+    <section class="section">
+      <div class="container">
+        <div class="quote-block">
+          <p class="quote-block__text editable" contenteditable="false" data-field="404-quote">
+            Sometimes getting lost is the best way to find something new. In this moment of digital wandering, consider it an invitation to pause, breathe, and discover something unexpected.
+          </p>
+          <cite class="quote-block__author editable" contenteditable="false" data-field="404-quote-author">
+            — A gentle reminder from Still Mind Society
+          </cite>
+        </div>
+      </div>
+    </section>
 
-            <div class="cluster" style="justify-content: center; margin-top: var(--space-xl);">
-              <a href="index.html" class="btn btn--primary">Return Home</a>
-              <a href="initiatives.html" class="btn btn--accent">Explore Our Work</a>
-            </div>
+    <!-- Helpful Links -->
+    <section class="section">
+      <div class="container">
+        <div class="content-section">
+          <div class="content-section__header">
+            <h2 class="content-section__title editable" contenteditable="false" data-field="helpful-title">
+              While You're Here
+            </h2>
+            <p class="content-section__subtitle text-balance editable" contenteditable="false" data-field="helpful-subtitle">
+              Perhaps one of these paths will lead you where you need to go.
+            </p>
           </div>
 
-          <div style="margin-top: var(--space-3xl);">
-            <h3>While You're Here...</h3>
-            <p>Consider this your invitation to practice what we preach:</p>
-            <ul style="text-align: left; max-width: var(--content-max-width); margin: var(--space-lg) auto;">
-              <li>Take five deep breaths</li>
-              <li>Look out a window for 30 seconds</li>
-              <li>Notice three things you can hear right now</li>
-              <li>Ask yourself: "What am I really looking for?"</li>
-            </ul>
+          <div class="grid grid-3">
+            <div class="feature-block">
+              <span class="feature-block__icon">🏠</span>
+              <h3 class="feature-block__title">
+                <a href="index.html" class="editable" contenteditable="false" data-field="link1-title">
+                  Start Fresh
+                </a>
+              </h3>
+              <p class="feature-block__description editable" contenteditable="false" data-field="link1-desc">
+                Return to our homepage and begin your journey with Still Mind Society from the beginning.
+              </p>
+            </div>
+
+            <div class="feature-block">
+              <span class="feature-block__icon">🎯</span>
+              <h3 class="feature-block__title">
+                <a href="initiatives.html" class="editable" contenteditable="false" data-field="link2-title">
+                  Explore Our Work
+                </a>
+              </h3>
+              <p class="feature-block__description editable" contenteditable="false" data-field="link2-desc">
+                Discover the projects and initiatives we're creating to restore balance in our digital world.
+              </p>
+            </div>
+
+            <div class="feature-block">
+              <span class="feature-block__icon">👥</span>
+              <h3 class="feature-block__title">
+                <a href="team.html" class="editable" contenteditable="false" data-field="link3-title">
+                  Meet Our Team
+                </a>
+              </h3>
+              <p class="feature-block__description editable" contenteditable="false" data-field="link3-desc">
+                Get to know the creators behind the movement toward mindful technology.
+              </p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Still Mind Moment -->
+    <section class="section">
+      <div class="container">
+        <div class="cta-section">
+          <h2 class="cta-section__title editable" contenteditable="false" data-field="moment-title">
+            Take a Still Mind Moment
+          </h2>
+          <p class="cta-section__description editable" contenteditable="false" data-field="moment-description">
+            Since you're here anyway, why not practice what we preach? Take three deep breaths. Notice how you feel. Sometimes the best discoveries happen when we're not actively searching.
+          </p>
+          <div class="cluster cluster--center">
+            <a href="contact.html" class="btn btn--primary">Connect With Us</a>
+            <a href="about.html" class="btn btn--subtle">Learn Our Story</a>
           </div>
         </div>
       </div>
@@ -57,5 +139,98 @@
   <div data-include="assets/reusables/footer.html"></div>
 
   <script src="assets/js/includes.js"></script>
+  <script>
+    // Content Management System functionality
+    let cmsMode = false;
+    let originalContent = {};
+
+    function toggleCMSMode() {
+      cmsMode = !cmsMode;
+      const body = document.body;
+      const toolbar = document.getElementById('cms-toolbar');
+      const editables = document.querySelectorAll('.editable');
+
+      if (cmsMode) {
+        body.classList.add('cms-mode-active');
+        toolbar.classList.add('active');
+
+        editables.forEach(el => {
+          originalContent[el.dataset.field] = el.innerHTML;
+          el.contentEditable = true;
+          el.classList.add('editable-active');
+        });
+      } else {
+        body.classList.remove('cms-mode-active');
+        toolbar.classList.remove('active');
+
+        editables.forEach(el => {
+          el.contentEditable = false;
+          el.classList.remove('editable-active');
+        });
+      }
+    }
+
+    function savePage() {
+      const editables = document.querySelectorAll('.editable');
+      const changes = {};
+
+      editables.forEach(el => {
+        const field = el.dataset.field;
+        changes[field] = el.innerHTML;
+      });
+
+      localStorage.setItem('sms-404-content', JSON.stringify(changes));
+      alert('Changes saved! (Demo: saved to localStorage)');
+      console.log('Saved changes:', changes);
+    }
+
+    function resetPage() {
+      if (confirm('Reset all changes to original content?')) {
+        const editables = document.querySelectorAll('.editable');
+
+        editables.forEach(el => {
+          const field = el.dataset.field;
+          if (originalContent[field]) {
+            el.innerHTML = originalContent[field];
+          }
+        });
+
+        localStorage.removeItem('sms-404-content');
+        alert('Page reset to original content');
+      }
+    }
+
+    function loadSavedContent() {
+      const saved = localStorage.getItem('sms-404-content');
+      if (saved) {
+        const changes = JSON.parse(saved);
+
+        Object.keys(changes).forEach(field => {
+          const element = document.querySelector(`[data-field="${field}"]`);
+          if (element) {
+            element.innerHTML = changes[field];
+          }
+        });
+      }
+    }
+
+    // Initialize on page load
+    document.addEventListener('DOMContentLoaded', function() {
+      loadSavedContent();
+    });
+
+    // Keyboard shortcuts
+    document.addEventListener('keydown', function(e) {
+      if (e.ctrlKey || e.metaKey) {
+        if (e.key === 'e') {
+          e.preventDefault();
+          toggleCMSMode();
+        } else if (e.key === 's' && cmsMode) {
+          e.preventDefault();
+          savePage();
+        }
+      }
+    });
+  </script>
 </body>
 </html>

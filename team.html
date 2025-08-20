@@ -24,13 +24,25 @@
 
   <div data-include="assets/reusables/header.html"></div>
 
+  <!-- CMS Toggle Button -->
+  <button class="cms-toggle" onclick="toggleCMSMode()" title="Toggle Edit Mode">✏️</button>
+
+  <!-- CMS Toolbar -->
+  <div class="cms-toolbar" id="cms-toolbar">
+    <h4>Edit Mode</h4>
+    <button onclick="savePage()" class="btn btn--primary btn--sm">Save Changes</button>
+    <button onclick="resetPage()" class="btn btn--subtle btn--sm">Reset</button>
+  </div>
+
   <main id="main" role="main">
     <!-- Hero Section -->
     <section class="section section--hero">
       <div class="container">
         <div class="hero">
-          <h1 class="hero__title text-balance">Meet Our Team</h1>
-          <p class="hero__subtitle text-balance">
+          <h1 class="hero__title text-balance editable" contenteditable="false" data-field="team-hero-title">
+            Meet Our Team
+          </h1>
+          <p class="hero__subtitle text-balance editable" contenteditable="false" data-field="team-hero-subtitle">
             Four creators united by a shared belief that our best ideas emerge not from constant stimulation, but from meaningful pauses and contemplative space.
           </p>
         </div>
@@ -40,126 +52,184 @@
     <!-- Team Introduction -->
     <section class="section">
       <div class="container">
-        <div class="grid grid-2">
-          <div>
-            <h2>Creators, Not Consumers</h2>
-            <p>We are Hannah, Sanaa, Matthew, and Kiaryn—an interior designer, graphic designer, game developer, and digital designer who came together around a simple realization: our most breakthrough moments happened during breaks, not during binges.</p>
-            <p>Our Adventure Time-style avatars aren't just playful—they represent our commitment to approaching serious problems with creativity and wonder. In a world that often takes itself too seriously, we believe humor and humanity are essential tools for change.</p>
+        <div class="two-column">
+          <div class="text-content">
+            <h2 class="editable" contenteditable="false" data-field="intro-title">Creators, Not Consumers</h2>
+            <div class="stack">
+              <p class="editable" contenteditable="false" data-field="intro-p1">
+                We are Hannah, Sanaa, Matthew, and Kiaryn—an interior designer, graphic designer, game developer, and digital designer who came together around a simple realization: our most breakthrough moments happened during breaks, not during binges.
+              </p>
+              <p class="editable" contenteditable="false" data-field="intro-p2">
+                Our Adventure Time-style avatars aren't just playful—they represent our commitment to approaching serious problems with creativity and wonder. In a world that often takes itself too seriously, we believe humor and humanity are essential tools for change.
+              </p>
+            </div>
           </div>
-          <div class="card">
-            <h3>Our Collective Journey</h3>
-            <p>We met through various creative communities, each struggling with the same paradox: how to stay creatively vital in an attention economy designed to drain creativity.</p>
-            <p>The breakthrough came when we realized we weren't fighting technology—we were fighting for intentionality. The enemy isn't our devices; it's the assumption that productivity requires constant input.</p>
-            <p><strong>Still Mind Society</strong> is our answer: a creative collective dedicated to designing experiences that honor both focus and rest, engagement and reflection.</p>
+
+          <div class="sidebar">
+            <h3 class="editable" contenteditable="false" data-field="journey-title">Our Collective Journey</h3>
+            <div class="stack-sm">
+              <p class="editable" contenteditable="false" data-field="journey-desc">
+                We met through various creative communities, each struggling with the same paradox: how to stay creatively vital in an attention economy designed to drain creativity.
+              </p>
+              <p class="editable" contenteditable="false" data-field="journey-realization">
+                The answer, we discovered, wasn't more tools or techniques—it was permission to pause, to be bored, to let our minds wander without purpose or productivity.
+              </p>
+            </div>
           </div>
         </div>
       </div>
     </section>
 
-    <!-- Team Member Cards -->
+    <!-- Team Members -->
     <section class="section">
       <div class="container">
-        <div class="grid grid-4">
-          <div class="card team-card">
-            <div class="team-card__avatar">H</div>
-            <h3 class="team-card__name">Hannah</h3>
-            <div class="team-card__role">Interior Designer</div>
-            <p>Creates spaces that encourage mindful living and contemplative design. Hannah believes our physical environments shape our mental landscapes—and she designs spaces that invite both productivity and rest.</p>
-            <p><strong>Specialty:</strong> Biophilic design, meditation spaces, and environments that support neurodiversity.</p>
+        <div class="content-section">
+          <div class="content-section__header">
+            <h2 class="content-section__title editable" contenteditable="false" data-field="members-title">
+              The Collective
+            </h2>
+            <p class="content-section__subtitle text-balance editable" contenteditable="false" data-field="members-subtitle">
+              Each of us brings a unique perspective to the challenge of creating balance in our hyperconnected world.
+            </p>
           </div>
 
-          <div class="card team-card">
-            <div class="team-card__avatar">S</div>
-            <h3 class="team-card__name">Sanaa</h3>
-            <div class="team-card__role">Graphic Designer</div>
-            <p>Crafts visual narratives that challenge conventional design thinking. Sanaa's work explores the tension between minimalism and expression, always asking: "What can we remove to make the message stronger?"</p>
-            <p><strong>Specialty:</strong> Brand identity, editorial design, and visual systems that breathe.</p>
-          </div>
+          <div class="grid grid-2 grid--gap-lg">
+            <!-- Team Member 1 -->
+            <div class="team-card">
+              <div class="team-card__avatar">H</div>
+              <h3 class="team-card__name editable" contenteditable="false" data-field="member1-name">
+                Hannah
+              </h3>
+              <p class="team-card__role editable" contenteditable="false" data-field="member1-role">
+                Interior Designer & Spatial Philosopher
+              </p>
+              <p class="editable" contenteditable="false" data-field="member1-desc">
+                Hannah creates physical spaces that invite pause and reflection. Her work challenges the assumption that every space must be "activated" or "optimized," instead exploring how emptiness and negative space can be generative. She believes our environments shape our mental states more than we realize.
+              </p>
+            </div>
 
-          <div class="card team-card">
-            <div class="team-card__avatar">M</div>
-            <h3 class="team-card__name">Matthew</h3>
-            <div class="team-card__role">Game Designer & Developer</div>
-            <p>Builds interactive experiences that promote mindful engagement over addictive mechanics. Matthew reimagines what games can be when they're designed to honor player time and attention.</p>
-            <p><strong>Specialty:</strong> Contemplative gaming, ethical design patterns, and technology that knows when to stop.</p>
-          </div>
+            <!-- Team Member 2 -->
+            <div class="team-card">
+              <div class="team-card__avatar">S</div>
+              <h3 class="team-card__name editable" contenteditable="false" data-field="member2-name">
+                Sanaa
+              </h3>
+              <p class="team-card__role editable" contenteditable="false" data-field="member2-role">
+                Graphic Designer & Visual Minimalist
+              </p>
+              <p class="editable" contenteditable="false" data-field="member2-desc">
+                Sanaa's design philosophy centers on what she calls "visual breathing room." Her work strips away the unnecessary to reveal what's essential, creating designs that feel calm rather than chaotic. She advocates for design that serves the message, not the ego.
+              </p>
+            </div>
 
-          <div class="card team-card">
-            <div class="team-card__avatar">K</div>
-            <h3 class="team-card__name">Kiaryn</h3>
-            <div class="team-card__role">Digital Designer</div>
-            <p>Designs digital experiences that balance stimulation with reflection. Kiaryn specializes in interfaces that feel calm yet engaging, proving that good UX doesn't require hijacking attention.</p>
-            <p><strong>Specialty:</strong> UX/UI design, accessibility, and digital experiences that respect human rhythms.</p>
+            <!-- Team Member 3 -->
+            <div class="team-card">
+              <div class="team-card__avatar">M</div>
+              <h3 class="team-card__name editable" contenteditable="false" data-field="member3-name">
+                Matthew
+              </h3>
+              <p class="team-card__role editable" contenteditable="false" data-field="member3-role">
+                Game Developer & Interactive Storyteller
+              </p>
+              <p class="editable" contenteditable="false" data-field="member3-desc">
+                Matthew creates games that deliberately subvert addictive design patterns. Instead of endless engagement, his games have natural endpoints. Instead of constant rewards, they explore contemplation. He's interested in how interactive media can teach patience rather than demand attention.
+              </p>
+            </div>
+
+            <!-- Team Member 4 -->
+            <div class="team-card">
+              <div class="team-card__avatar">K</div>
+              <h3 class="team-card__name editable" contenteditable="false" data-field="member4-name">
+                Kiaryn
+              </h3>
+              <p class="team-card__role editable" contenteditable="false" data-field="member4-role">
+                Digital Designer & Technology Humanist
+              </p>
+              <p class="editable" contenteditable="false" data-field="member4-desc">
+                Kiaryn specializes in designing digital experiences that respect human attention and energy. Her work focuses on creating interfaces that help people accomplish their goals and then gracefully step away. She's passionate about technology that amplifies rather than replaces human connection.
+              </p>
+            </div>
           </div>
         </div>
       </div>
     </section>
 
-    <!-- Our Approach -->
+    <!-- Team Philosophy -->
     <section class="section">
       <div class="container">
-        <div class="text-center stack-xl">
-          <h2>Our Collaborative Approach</h2>
-          <p class="text-balance">How four different design disciplines come together to challenge the attention economy.</p>
-        </div>
-
-        <div class="grid grid-2">
-          <div class="card">
-            <h3>Interdisciplinary Thinking</h3>
-            <p>When an interior designer, graphic designer, game developer, and digital designer collaborate, magic happens. We bring different perspectives to every challenge:</p>
-            <ul class="stack-sm">
-              <li><strong>Physical space</strong> informs digital interface</li>
-              <li><strong>Visual hierarchy</strong> influences game mechanics</li>
-              <li><strong>Interactive design</strong> shapes environmental planning</li>
-              <li><strong>User experience</strong> guides brand storytelling</li>
-            </ul>
-          </div>
-
-          <div class="card">
-            <h3>Attention vs. Boredom</h3>
-            <p>Our avatar style reflects a playful take on a serious battle: attention technology versus boredom as a creative gateway. We've chosen our side—we're team boredom.</p>
-            <p>Not because we're against technology, but because we believe the most interesting innovations come from the spaces between interactions, the pauses between posts, the silence between sounds.</p>
-          </div>
+        <div class="quote-block">
+          <p class="quote-block__text editable" contenteditable="false" data-field="team-quote">
+            We're not anti-technology or anti-progress. We're pro-intention. We believe the future belongs to those who can toggle between deep engagement and restorative rest, who can be present in the digital world without losing themselves to it.
+          </p>
+          <cite class="quote-block__author editable" contenteditable="false" data-field="team-quote-author">
+            — Our Shared Philosophy
+          </cite>
         </div>
       </div>
     </section>
 
-    <!-- Working With Us -->
+    <!-- Working Style -->
     <section class="section">
       <div class="container">
-        <div class="grid grid-2">
-          <div>
-            <h2>Working With Still Mind Society</h2>
-            <p>We partner with organizations, brands, and individuals who want to challenge the culture of constant stimulation. Our projects range from digital products to physical spaces, always with the goal of creating more intentional, humane experiences.</p>
-
-            <h3>What We Offer:</h3>
-            <ul class="stack-sm">
-              <li><strong>Design consultation</strong> on attention-respectful products</li>
-              <li><strong>Research and strategy</strong> for ethical engagement</li>
-              <li><strong>Workshop facilitation</strong> on digital wellness</li>
-              <li><strong>Creative direction</strong> for mindful brand experiences</li>
-              <li><strong>Space design</strong> that supports contemplative work</li>
-            </ul>
+        <div class="content-section">
+          <div class="content-section__header">
+            <h2 class="content-section__title editable" contenteditable="false" data-field="style-title">
+              How We Work
+            </h2>
+            <p class="content-section__subtitle text-balance editable" contenteditable="false" data-field="style-subtitle">
+              Our process reflects our values—we practice what we preach.
+            </p>
           </div>
-          <div class="card">
-            <h3>Our Process</h3>
-            <p>Every project begins with a simple question: "How might we create more space for human flourishing?"</p>
-            <p>We start by understanding the true goals—not just the stated objectives, but the deeper human needs. Then we design solutions that honor both business requirements and human wellbeing.</p>
-            <p>Our deliverables always include strategies for sustainable engagement, natural stopping points, and ways to measure success beyond just attention captured.</p>
+
+          <div class="three-column">
+            <div class="feature-block">
+              <span class="feature-block__icon">🕰️</span>
+              <h3 class="feature-block__title editable" contenteditable="false" data-field="style1-title">
+                Asynchronous by Default
+              </h3>
+              <p class="feature-block__description editable" contenteditable="false" data-field="style1-desc">
+                We minimize meetings and real-time communication, allowing each team member deep work time and respecting different energy rhythms.
+              </p>
+            </div>
+
+            <div class="feature-block">
+              <span class="feature-block__icon">🌱</span>
+              <h3 class="feature-block__title editable" contenteditable="false" data-field="style2-title">
+                Seasonal Sprints
+              </h3>
+              <p class="feature-block__description editable" contenteditable="false" data-field="style2-desc">
+                Instead of constant delivery pressure, we work in focused bursts followed by intentional rest periods for reflection and renewal.
+              </p>
+            </div>
+
+            <div class="feature-block">
+              <span class="feature-block__icon">🎯</span>
+              <h3 class="feature-block__title editable" contenteditable="false" data-field="style3-title">
+                Purpose-Driven Projects
+              </h3>
+              <p class="feature-block__description editable" contenteditable="false" data-field="style3-desc">
+                Every project starts with the question: "Will this contribute to human flourishing or just add to the noise?" We only build what serves.
+              </p>
+            </div>
           </div>
         </div>
       </div>
     </section>
 
-    <!-- Call to Action -->
+    <!-- Join Us -->
     <section class="section">
-      <div class="container text-center">
-        <div class="card" style="max-width: 600px; margin: 0 auto;">
-          <h2>Let's Create Something Meaningful</h2>
-          <p class="text-balance">Ready to work with designers who believe technology should serve human flourishing, not exploit human attention?</p>
-          <div class="cluster" style="justify-content: center; margin-top: var(--space-xl);">
+      <div class="container">
+        <div class="cta-section">
+          <h2 class="cta-section__title editable" contenteditable="false" data-field="join-title">
+            Collaborate With Us
+          </h2>
+          <p class="cta-section__description editable" contenteditable="false" data-field="join-description">
+            Interested in working with minds that value depth over speed, intention over impulse? Whether you're seeking design services, development partnerships, or simply want to explore ideas around mindful technology—we'd love to hear from you.
+          </p>
+          <div class="cluster cluster--center">
             <a href="contact.html" class="btn btn--primary">Start a Conversation</a>
             <a href="initiatives.html" class="btn btn--accent">See Our Work</a>
+            <a href="about.html" class="btn btn--subtle">Learn Our Story</a>
           </div>
         </div>
       </div>
@@ -169,5 +239,106 @@
   <div data-include="assets/reusables/footer.html"></div>
 
   <script src="assets/js/includes.js"></script>
+  <script>
+    // Content Management System functionality
+    let cmsMode = false;
+    let originalContent = {};
+
+    function toggleCMSMode() {
+      cmsMode = !cmsMode;
+      const body = document.body;
+      const toolbar = document.getElementById('cms-toolbar');
+      const editables = document.querySelectorAll('.editable');
+
+      if (cmsMode) {
+        body.classList.add('cms-mode-active');
+        toolbar.classList.add('active');
+
+        editables.forEach(el => {
+          originalContent[el.dataset.field] = el.innerHTML;
+          el.contentEditable = true;
+          el.classList.add('editable-active');
+        });
+      } else {
+        body.classList.remove('cms-mode-active');
+        toolbar.classList.remove('active');
+
+        editables.forEach(el => {
+          el.contentEditable = false;
+          el.classList.remove('editable-active');
+        });
+      }
+    }
+
+    function savePage() {
+      const editables = document.querySelectorAll('.editable');
+      const changes = {};
+
+      editables.forEach(el => {
+        const field = el.dataset.field;
+        changes[field] = el.innerHTML;
+      });
+
+      localStorage.setItem('sms-team-content', JSON.stringify(changes));
+      alert('Changes saved! (Demo: saved to localStorage)');
+      console.log('Saved changes:', changes);
+    }
+
+    function resetPage() {
+      if (confirm('Reset all changes to original content?')) {
+        const editables = document.querySelectorAll('.editable');
+
+        editables.forEach(el => {
+          const field = el.dataset.field;
+          if (originalContent[field]) {
+            el.innerHTML = originalContent[field];
+          }
+        });
+
+        localStorage.removeItem('sms-team-content');
+        alert('Page reset to original content');
+      }
+    }
+
+    function loadSavedContent() {
+      const saved = localStorage.getItem('sms-team-content');
+      if (saved) {
+        const changes = JSON.parse(saved);
+
+        Object.keys(changes).forEach(field => {
+          const element = document.querySelector(`[data-field="${field}"]`);
+          if (element) {
+            element.innerHTML = changes[field];
+          }
+        });
+      }
+    }
+
+    // Initialize on page load
+    document.addEventListener('DOMContentLoaded', function() {
+      loadSavedContent();
+
+      // Update navigation
+      const navLinks = document.querySelectorAll('.nav-links a');
+      navLinks.forEach(link => {
+        if (link.getAttribute('href') === 'team.html') {
+          link.setAttribute('aria-current', 'page');
+        }
+      });
+    });
+
+    // Keyboard shortcuts
+    document.addEventListener('keydown', function(e) {
+      if (e.ctrlKey || e.metaKey) {
+        if (e.key === 'e') {
+          e.preventDefault();
+          toggleCMSMode();
+        } else if (e.key === 's' && cmsMode) {
+          e.preventDefault();
+          savePage();
+        }
+      }
+    });
+  </script>
 </body>
 </html>

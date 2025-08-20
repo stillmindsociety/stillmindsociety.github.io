@@ -54,13 +54,25 @@
 
   <div data-include="assets/reusables/header.html"></div>
 
+  <!-- CMS Toggle Button -->
+  <button class="cms-toggle" onclick="toggleCMSMode()" title="Toggle Edit Mode">✏️</button>
+
+  <!-- CMS Toolbar -->
+  <div class="cms-toolbar" id="cms-toolbar">
+    <h4>Edit Mode</h4>
+    <button onclick="savePage()" class="btn btn--primary btn--sm">Save Changes</button>
+    <button onclick="resetPage()" class="btn btn--subtle btn--sm">Reset</button>
+  </div>
+
   <main id="main" role="main">
-    <!-- Hero Section -->
-    <section class="section section--hero">
+    <!-- Enhanced Hero Section -->
+    <section class="section section--hero section--spacious">
       <div class="container">
         <div class="hero">
-          <h1 class="hero__title text-balance">Calmness, deliberately disrupted.</h1>
-          <p class="hero__subtitle text-balance">
+          <h1 class="hero__title text-balance editable" contenteditable="false" data-field="hero-title">
+            Calmness, deliberately disrupted.
+          </h1>
+          <p class="hero__subtitle text-balance editable" contenteditable="false" data-field="hero-subtitle">
             Breaking monotony and the death of boredom. We restore balance in a world of constant stimulation by creating meaningful pauses that foster calm, creativity, and reflection.
           </p>
           <div class="cluster hero__actions">
@@ -71,147 +83,169 @@
       </div>
     </section>
 
-    <!-- Mission & Vision -->
+    <!-- Enhanced Mission & Vision -->
     <section class="section">
       <div class="container">
-        <div class="grid grid-2">
-          <div class="card card--feature">
-            <h2>Our Mission</h2>
-            <p data-brand-mission>To restore balance in a world of constant stimulation by creating meaningful pauses that foster calm, creativity, and reflection.</p>
+        <div class="content-section">
+          <div class="content-section__header">
+            <h2 class="content-section__title editable" contenteditable="false" data-field="foundation-title">
+              Our Foundation
+            </h2>
+            <p class="content-section__subtitle text-balance editable" contenteditable="false" data-field="foundation-subtitle">
+              The principles that guide our mission to restore balance in our hyperconnected world.
+            </p>
           </div>
-          <div class="card card--accent">
-            <h2>Our Vision</h2>
-            <p data-brand-vision>A future where stillness is celebrated as a catalyst for innovation, authenticity, and wellbeing in our hyperconnected world.</p>
-          </div>
-        </div>
-      </div>
-    </section>
 
-    <!-- Values Grid -->
-    <section class="section">
-      <div class="container">
-        <div class="text-center stack-xl">
-          <h2>Our Core Values</h2>
-          <p class="text-balance">Four principles that guide our approach to challenging overstimulation and nurturing meaningful connection.</p>
-        </div>
-
-        <div class="grid grid-4">
-          <div class="card">
-            <h3>Digital Balance</h3>
-            <p>Thrive online while protecting reflective space and mental clarity.</p>
-          </div>
-          <div class="card">
-            <h3>Intentional Rhythm</h3>
-            <p>Know when to speed up and slow down; let stillness speak volumes.</p>
-          </div>
-          <div class="card">
-            <h3>Creative Disruption</h3>
-            <p>Chase norm-challenging ideas and embrace fresh perspectives.</p>
-          </div>
-          <div class="card">
-            <h3>Boredom as Gateway</h3>
-            <p>Embrace boredom as a pathway to creativity and deeper connection.</p>
-          </div>
-        </div>
-      </div>
-    </section>
-
-    <!-- Why Boredom Matters -->
-    <section class="section">
-      <div class="container">
-        <div class="grid grid-2">
-          <div>
-            <h2>Why Boredom Matters</h2>
-            <p>In our hyperconnected world, we've lost touch with the power of unstimulated moments. Boredom isn't the enemy—it's the gateway to creativity, deep thinking, and authentic connection.</p>
-            <p>When we embrace stillness, we create space for ideas to emerge, for reflection to deepen, and for genuine innovation to flourish. Our cracked circle represents this beautiful disruption—the moment when perfect stillness breaks open to reveal infinite possibility.</p>
-            <a href="about.html" class="btn btn--subtle">Learn Our Story</a>
-          </div>
-          <div class="card">
-            <h3>The Science of Stillness</h3>
-            <p>Research shows that unstimulated "default mode" brain activity is crucial for:</p>
-            <ul class="stack-sm">
-              <li>Creative problem-solving</li>
-              <li>Memory consolidation</li>
-              <li>Self-reflection and awareness</li>
-              <li>Future planning and imagination</li>
-              <li>Emotional processing and wellbeing</li>
-            </ul>
-          </div>
-        </div>
-      </div>
-    </section>
-
-    <!-- Brand Showcase -->
-    <section class="section">
-      <div class="container text-center">
-        <h2>Our Visual Identity</h2>
-        <p class="text-balance">Colors and typography that embody the tension between stillness and disruption.</p>
-
-        <div class="color-palette">
-          <div class="color-chip color-chip--cyber-purple">
-            <div class="color-chip__swatch"></div>
-            <div class="color-chip__label">Cyber Purple<br><small>Futuristic creativity</small></div>
-          </div>
-          <div class="color-chip color-chip--neon-lime">
-            <div class="color-chip__swatch"></div>
-            <div class="color-chip__label">Neon Lime<br><small>Shock of energy</small></div>
-          </div>
-          <div class="color-chip color-chip--bone-white">
-            <div class="color-chip__swatch"></div>
-            <div class="color-chip__label">Bone White<br><small>Clarity and calm</small></div>
-          </div>
-          <div class="color-chip color-chip--charcoal">
-            <div class="color-chip__swatch"></div>
-            <div class="color-chip__label">Charcoal<br><small>Grounding stillness</small></div>
-          </div>
-        </div>
-
-        <div class="card" style="margin-top: var(--space-2xl);">
-          <h3>Typography: Geist</h3>
-          <p>Clean, modern, and minimal—reflecting our commitment to clarity without sacrificing expression. Geist embodies the perfect balance between technical precision and human warmth.</p>
-        </div>
-      </div>
-    </section>
-
-    <!-- Latest Initiatives -->
-    <section class="section">
-      <div class="container">
-        <div class="text-center stack-xl">
-          <h2>Latest Initiatives</h2>
-          <p class="text-balance">Projects and experiments challenging the status quo of constant stimulation.</p>
-        </div>
-
-        <div class="grid grid-3">
-          <div class="card">
-            <h3>Mindful Spaces Project</h3>
-            <p>Designing physical and digital environments that promote contemplative thinking.</p>
-            <div class="cluster" style="margin-top: var(--space-lg);">
-              <span class="btn btn--subtle" style="pointer-events: none; font-size: var(--font-size-sm);">Design</span>
-              <span class="btn btn--subtle" style="pointer-events: none; font-size: var(--font-size-sm);">Wellness</span>
+          <div class="grid grid-2 grid--gap-lg">
+            <div class="card card--feature card--elevated">
+              <h3 class="editable" contenteditable="false" data-field="mission-title">Our Mission</h3>
+              <p class="editable" contenteditable="false" data-field="mission-text" data-brand-mission>
+                To restore balance in a world of constant stimulation by creating meaningful pauses that foster calm, creativity, and reflection.
+              </p>
             </div>
-          </div>
-
-          <div class="card">
-            <h3>Boredom Revival Campaign</h3>
-            <p>A movement to reclaim unstructured time and celebrate mental downtime.</p>
-            <div class="cluster" style="margin-top: var(--space-lg);">
-              <span class="btn btn--subtle" style="pointer-events: none; font-size: var(--font-size-sm);">Culture</span>
-              <span class="btn btn--subtle" style="pointer-events: none; font-size: var(--font-size-sm);">Advocacy</span>
-            </div>
-          </div>
-
-          <div class="card">
-            <h3>Attention Economics Research</h3>
-            <p>Investigating the true cost of constant connectivity on creativity and focus.</p>
-            <div class="cluster" style="margin-top: var(--space-lg);">
-              <span class="btn btn--subtle" style="pointer-events: none; font-size: var(--font-size-sm);">Research</span>
-              <span class="btn btn--subtle" style="pointer-events: none; font-size: var(--font-size-sm);">Technology</span>
+            <div class="card card--accent card--elevated">
+              <h3 class="editable" contenteditable="false" data-field="vision-title">Our Vision</h3>
+              <p class="editable" contenteditable="false" data-field="vision-text" data-brand-vision>
+                A future where stillness is celebrated as a catalyst for innovation, authenticity, and wellbeing in our hyperconnected world.
+              </p>
             </div>
           </div>
         </div>
+      </div>
+    </section>
 
-        <div class="text-center" style="margin-top: var(--space-2xl);">
-          <a href="initiatives.html" class="btn btn--primary">View All Initiatives</a>
+    <!-- Enhanced Values Grid -->
+    <section class="section section--compact">
+      <div class="container">
+        <div class="content-section">
+          <div class="content-section__header">
+            <h2 class="content-section__title editable" contenteditable="false" data-field="values-title">
+              Our Values
+            </h2>
+            <p class="content-section__subtitle text-balance editable" contenteditable="false" data-field="values-subtitle">
+              Four principles that shape everything we create and believe in.
+            </p>
+          </div>
+
+          <div class="grid grid-4">
+            <div class="feature-block">
+              <span class="feature-block__icon">🔄</span>
+              <h3 class="feature-block__title editable" contenteditable="false" data-field="value1-title">
+                Purposeful Disruption
+              </h3>
+              <p class="feature-block__description editable" contenteditable="false" data-field="value1-desc">
+                Breaking harmful patterns with intention, not chaos.
+              </p>
+            </div>
+
+            <div class="feature-block">
+              <span class="feature-block__icon">🎯</span>
+              <h3 class="feature-block__title editable" contenteditable="false" data-field="value2-title">
+                Mindful Innovation
+              </h3>
+              <p class="feature-block__description editable" contenteditable="false" data-field="value2-desc">
+                Creating with consciousness and deliberate thought.
+              </p>
+            </div>
+
+            <div class="feature-block">
+              <span class="feature-block__icon">🌱</span>
+              <h3 class="feature-block__title editable" contenteditable="false" data-field="value3-title">
+                Authentic Connection
+              </h3>
+              <p class="feature-block__description editable" contenteditable="false" data-field="value3-desc">
+                Building genuine relationships through shared stillness.
+              </p>
+            </div>
+
+            <div class="feature-block">
+              <span class="feature-block__icon">✨</span>
+              <h3 class="feature-block__title editable" contenteditable="false" data-field="value4-title">
+                Creative Presence
+              </h3>
+              <p class="feature-block__description editable" contenteditable="false" data-field="value4-desc">
+                Finding inspiration in moments of pause and reflection.
+              </p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Featured Quote Section -->
+    <section class="section">
+      <div class="container">
+        <div class="quote-block">
+          <p class="quote-block__text editable" contenteditable="false" data-field="featured-quote">
+            In the space between breaths, between thoughts, between moments—there lies infinite possibility. We create sanctuaries for this space.
+          </p>
+          <cite class="quote-block__author editable" contenteditable="false" data-field="quote-author">
+            — Still Mind Society Collective
+          </cite>
+        </div>
+      </div>
+    </section>
+
+    <!-- What We Do Section -->
+    <section class="section">
+      <div class="container">
+        <div class="content-section">
+          <div class="content-section__header">
+            <h2 class="content-section__title editable" contenteditable="false" data-field="whatwedo-title">
+              What We Do
+            </h2>
+            <p class="content-section__subtitle text-balance editable" contenteditable="false" data-field="whatwedo-subtitle">
+              We create experiences, spaces, and moments that invite pause in a world that never stops.
+            </p>
+          </div>
+
+          <div class="three-column">
+            <div class="card card--elevated">
+              <h3 class="editable" contenteditable="false" data-field="service1-title">
+                🎨 Contemplative Design
+              </h3>
+              <p class="editable" contenteditable="false" data-field="service1-desc">
+                Crafting digital and physical spaces that encourage reflection and mindful interaction.
+              </p>
+            </div>
+
+            <div class="card card--elevated">
+              <h3 class="editable" contenteditable="false" data-field="service2-title">
+                🎮 Mindful Experiences
+              </h3>
+              <p class="editable" contenteditable="false" data-field="service2-desc">
+                Developing games and interactive media that celebrate slowness and thoughtful engagement.
+              </p>
+            </div>
+
+            <div class="card card--elevated">
+              <h3 class="editable" contenteditable="false" data-field="service3-title">
+                🌿 Pause Initiatives
+              </h3>
+              <p class="editable" contenteditable="false" data-field="service3-desc">
+                Programs and workshops that teach the art of strategic stillness in creative and professional contexts.
+              </p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Call to Action Section -->
+    <section class="section">
+      <div class="container">
+        <div class="cta-section">
+          <h2 class="cta-section__title editable" contenteditable="false" data-field="cta-title">
+            Ready to Embrace the Pause?
+          </h2>
+          <p class="cta-section__description editable" contenteditable="false" data-field="cta-description">
+            Join us in reimagining what it means to be productively still. Explore our initiatives, meet our team, or start a conversation about bringing more intentional pauses to your world.
+          </p>
+          <div class="cluster cluster--center">
+            <a href="initiatives.html" class="btn btn--primary">View Our Work</a>
+            <a href="contact.html" class="btn btn--accent">Get in Touch</a>
+            <a href="about.html" class="btn btn--subtle">Learn More</a>
+          </div>
         </div>
       </div>
     </section>
@@ -219,6 +253,181 @@
 
   <div data-include="assets/reusables/footer.html"></div>
 
+  <!-- Enhanced JavaScript -->
   <script src="assets/js/includes.js"></script>
+  <script>
+    // Content Management System functionality
+    let cmsMode = false;
+    let originalContent = {};
+
+    function toggleCMSMode() {
+      cmsMode = !cmsMode;
+      const body = document.body;
+      const toolbar = document.getElementById('cms-toolbar');
+      const editables = document.querySelectorAll('.editable');
+
+      if (cmsMode) {
+        body.classList.add('cms-mode-active');
+        toolbar.classList.add('active');
+
+        // Store original content
+        editables.forEach(el => {
+          originalContent[el.dataset.field] = el.innerHTML;
+          el.contentEditable = true;
+          el.classList.add('editable-active');
+        });
+
+        // Show edit indicators
+        editables.forEach(el => {
+          if (!el.querySelector('.edit-indicator')) {
+            const indicator = document.createElement('span');
+            indicator.className = 'edit-indicator';
+            indicator.innerHTML = '✏️';
+            el.appendChild(indicator);
+          }
+        });
+      } else {
+        body.classList.remove('cms-mode-active');
+        toolbar.classList.remove('active');
+
+        editables.forEach(el => {
+          el.contentEditable = false;
+          el.classList.remove('editable-active');
+
+          // Remove edit indicators
+          const indicator = el.querySelector('.edit-indicator');
+          if (indicator) {
+            indicator.remove();
+          }
+        });
+      }
+    }
+
+    function savePage() {
+      const editables = document.querySelectorAll('.editable');
+      const changes = {};
+
+      editables.forEach(el => {
+        const field = el.dataset.field;
+        changes[field] = el.innerHTML;
+      });
+
+      // Store in localStorage for demo purposes
+      localStorage.setItem('sms-content', JSON.stringify(changes));
+
+      // Show confirmation
+      alert('Changes saved! (Demo: saved to localStorage)');
+
+      console.log('Saved changes:', changes);
+    }
+
+    function resetPage() {
+      if (confirm('Reset all changes to original content?')) {
+        const editables = document.querySelectorAll('.editable');
+
+        editables.forEach(el => {
+          const field = el.dataset.field;
+          if (originalContent[field]) {
+            el.innerHTML = originalContent[field];
+          }
+        });
+
+        // Clear localStorage
+        localStorage.removeItem('sms-content');
+
+        alert('Page reset to original content');
+      }
+    }
+
+    // Load saved content on page load
+    function loadSavedContent() {
+      const saved = localStorage.getItem('sms-content');
+      if (saved) {
+        const changes = JSON.parse(saved);
+
+        Object.keys(changes).forEach(field => {
+          const element = document.querySelector(`[data-field="${field}"]`);
+          if (element) {
+            element.innerHTML = changes[field];
+          }
+        });
+      }
+    }
+
+    // Enhanced navigation highlighting
+    function updateNavigation() {
+      const navLinks = document.querySelectorAll('.nav-links a');
+      const currentPage = window.location.pathname.split('/').pop() || 'index.html';
+
+      navLinks.forEach(link => {
+        const href = link.getAttribute('href');
+        if (href === currentPage || (currentPage === '' && href === 'index.html')) {
+          link.setAttribute('aria-current', 'page');
+        }
+      });
+    }
+
+    // Smooth scroll for anchor links
+    function initSmoothScroll() {
+      document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+        anchor.addEventListener('click', function (e) {
+          e.preventDefault();
+          const target = document.querySelector(this.getAttribute('href'));
+          if (target) {
+            target.scrollIntoView({
+              behavior: 'smooth',
+              block: 'start'
+            });
+          }
+        });
+      });
+    }
+
+    // Header scroll effect
+    function initHeaderScroll() {
+      const header = document.querySelector('.header');
+      if (header) {
+        window.addEventListener('scroll', () => {
+          if (window.scrollY > 100) {
+            header.classList.add('header--scrolled');
+          } else {
+            header.classList.remove('header--scrolled');
+          }
+        });
+      }
+    }
+
+    // Initialize everything when DOM is loaded
+    document.addEventListener('DOMContentLoaded', function() {
+      loadSavedContent();
+      updateNavigation();
+      initSmoothScroll();
+      initHeaderScroll();
+
+      // Mobile navigation toggle
+      const navToggle = document.querySelector('.nav-toggle');
+      const navLinks = document.querySelector('.nav-links');
+
+      if (navToggle && navLinks) {
+        navToggle.addEventListener('click', () => {
+          const isOpen = navLinks.classList.toggle('open');
+          navToggle.setAttribute('aria-expanded', isOpen);
+        });
+      }
+    });
+
+    // Keyboard shortcuts for CMS
+    document.addEventListener('keydown', function(e) {
+      if (e.ctrlKey || e.metaKey) {
+        if (e.key === 'e') {
+          e.preventDefault();
+          toggleCMSMode();
+        } else if (e.key === 's' && cmsMode) {
+          e.preventDefault();
+          savePage();
+        }
+      }
+    });
+  </script>
 </body>
 </html>

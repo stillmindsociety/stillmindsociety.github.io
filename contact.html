@@ -24,13 +24,25 @@
 
   <div data-include="assets/reusables/header.html"></div>
 
+  <!-- CMS Toggle Button -->
+  <button class="cms-toggle" onclick="toggleCMSMode()" title="Toggle Edit Mode">✏️</button>
+
+  <!-- CMS Toolbar -->
+  <div class="cms-toolbar" id="cms-toolbar">
+    <h4>Edit Mode</h4>
+    <button onclick="savePage()" class="btn btn--primary btn--sm">Save Changes</button>
+    <button onclick="resetPage()" class="btn btn--subtle btn--sm">Reset</button>
+  </div>
+
   <main id="main" role="main">
     <!-- Hero Section -->
     <section class="section section--hero">
       <div class="container">
         <div class="hero">
-          <h1 class="hero__title text-balance">Let's Start a Conversation</h1>
-          <p class="hero__subtitle text-balance">
+          <h1 class="hero__title text-balance editable" contenteditable="false" data-field="contact-hero-title">
+            Let's Start a Conversation
+          </h1>
+          <p class="hero__subtitle text-balance editable" contenteditable="false" data-field="contact-hero-subtitle">
             Ready to challenge the culture of constant stimulation? We'd love to hear from collaborators, researchers, organizations, and anyone curious about the power of meaningful pause.
           </p>
         </div>
@@ -40,194 +52,200 @@
     <!-- Contact Methods -->
     <section class="section">
       <div class="container">
-        <div class="grid grid-2">
-          <div>
-            <h2>How to Reach Us</h2>
-            <p>We believe in intentional communication. Here are the best ways to connect with Still Mind Society, depending on what you're looking for.</p>
+        <div class="two-column">
+          <div class="text-content">
+            <h2 class="editable" contenteditable="false" data-field="reach-title">How to Reach Us</h2>
+            <p class="editable" contenteditable="false" data-field="reach-intro">
+              We believe in intentional communication. Here are the best ways to connect with Still Mind Society, depending on what you're looking for.
+            </p>
 
             <div class="stack-xl">
-              <div class="card">
-                <h3>General Inquiries</h3>
-                <p>Questions about our work, speaking opportunities, or general collaboration ideas.</p>
-                <p><strong>Email:</strong> <a href="mailto:hello@stillmindsociety.com">hello@stillmindsociety.com</a></p>
-                <p><em>We typically respond within 48 hours during business days.</em></p>
-              </div>
-
-              <div class="card">
-                <h3>Project Partnerships</h3>
-                <p>Interested in collaborating on research, design projects, or initiatives that align with our mission.</p>
-                <p><strong>Email:</strong> <a href="mailto:partnerships@stillmindsociety.com">partnerships@stillmindsociety.com</a></p>
-                <p><em>Include details about your organization and specific collaboration ideas.</em></p>
-              </div>
-
-              <div class="card">
-                <h3>Research Collaboration</h3>
-                <p>Academic institutions, researchers, or organizations interested in studying attention economics and digital wellness.</p>
-                <p><strong>Email:</strong> <a href="mailto:research@stillmindsociety.com">research@stillmindsociety.com</a></p>
-                <p><em>Please include your research background and areas of interest.</em></p>
-              </div>
-            </div>
-          </div>
-
-          <div>
-            <div class="card card--feature">
-              <h3>Quick Contact Form</h3>
-              <p>Send us a message directly. We read every email and respond thoughtfully (though not immediately—we practice what we preach about intentional communication).</p>
-
-              <form action="mailto:hello@stillmindsociety.com" method="post" enctype="text/plain" class="stack-lg">
-                <div class="form-group">
-                  <label for="name" class="form-label">Your Name *</label>
-                  <input type="text" id="name" name="name" class="form-input" required aria-describedby="name-help">
-                  <small id="name-help">How should we address you?</small>
-                </div>
-
-                <div class="form-group">
-                  <label for="email" class="form-label">Email Address *</label>
-                  <input type="email" id="email" name="email" class="form-input" required aria-describedby="email-help">
-                  <small id="email-help">We'll use this to respond to your message.</small>
-                </div>
-
-                <div class="form-group">
-                  <label for="subject" class="form-label">Subject</label>
-                  <select id="subject" name="subject" class="form-input">
-                    <option value="">Select a topic...</option>
-                    <option value="General Inquiry">General Inquiry</option>
-                    <option value="Partnership Opportunity">Partnership Opportunity</option>
-                    <option value="Research Collaboration">Research Collaboration</option>
-                    <option value="Speaking Request">Speaking Request</option>
-                    <option value="Join an Initiative">Join an Initiative</option>
-                    <option value="Media/Press">Media/Press</option>
-                    <option value="Other">Other</option>
-                  </select>
-                </div>
-
-                <div class="form-group">
-                  <label for="message" class="form-label">Message *</label>
-                  <textarea id="message" name="message" class="form-textarea" required aria-describedby="message-help" placeholder="Tell us what you're thinking about..."></textarea>
-                  <small id="message-help">Share your thoughts, questions, or collaboration ideas.</small>
-                </div>
-
-                <button type="submit" class="btn btn--primary">Send Message</button>
-
-                <p style="font-size: var(--font-size-sm); opacity: 0.8; margin-top: var(--space-md);">
-                  <em>Note: This form opens your default email client. For the best experience, you can also email us directly at hello@stillmindsociety.com</em>
+              <div class="card card--elevated">
+                <h3 class="editable" contenteditable="false" data-field="general-title">General Inquiries</h3>
+                <p class="editable" contenteditable="false" data-field="general-desc">
+                  Questions about our work, speaking opportunities, or general collaboration ideas.
                 </p>
-              </form>
+                <p class="text-large">
+                  <strong>Email:</strong>
+                  <a href="mailto:hello@stillmindsociety.com" class="editable" contenteditable="false" data-field="general-email">
+                    hello@stillmindsociety.com
+                  </a>
+                </p>
+              </div>
+
+              <div class="card card--elevated">
+                <h3 class="editable" contenteditable="false" data-field="projects-title">Project Collaborations</h3>
+                <p class="editable" contenteditable="false" data-field="projects-desc">
+                  Design projects, development partnerships, consulting on mindful technology implementation.
+                </p>
+                <p class="text-large">
+                  <strong>Email:</strong>
+                  <a href="mailto:collaborate@stillmindsociety.com" class="editable" contenteditable="false" data-field="projects-email">
+                    collaborate@stillmindsociety.com
+                  </a>
+                </p>
+              </div>
+
+              <div class="card card--elevated">
+                <h3 class="editable" contenteditable="false" data-field="research-title">Research & Academic</h3>
+                <p class="editable" contenteditable="false" data-field="research-desc">
+                  Academic partnerships, research collaborations, or speaking at universities and conferences.
+                </p>
+                <p class="text-large">
+                  <strong>Email:</strong>
+                  <a href="mailto:research@stillmindsociety.com" class="editable" contenteditable="false" data-field="research-email">
+                    research@stillmindsociety.com
+                  </a>
+                </p>
+              </div>
+            </div>
+          </div>
+
+          <div class="sidebar">
+            <h3 class="editable" contenteditable="false" data-field="response-title">Response Philosophy</h3>
+            <div class="stack-sm">
+              <p class="editable" contenteditable="false" data-field="response-desc">
+                We practice what we preach when it comes to communication. Expect thoughtful responses rather than immediate ones.
+              </p>
+              <ul class="stack-xs">
+                <li class="editable" contenteditable="false" data-field="response-1">We check email twice daily during business days</li>
+                <li class="editable" contenteditable="false" data-field="response-2">Response time: 2-3 business days typically</li>
+                <li class="editable" contenteditable="false" data-field="response-3">We prefer depth over speed in our exchanges</li>
+                <li class="editable" contenteditable="false" data-field="response-4">No immediate response expectations</li>
+              </ul>
             </div>
           </div>
         </div>
       </div>
     </section>
 
-    <!-- Ways to Get Involved -->
+    <!-- Contact Form -->
     <section class="section">
       <div class="container">
-        <div class="text-center stack-xl">
-          <h2>Ways to Get Involved</h2>
-          <p class="text-balance">Whether you're an individual contributor or represent an organization, there are many ways to join our mission.</p>
-        </div>
-
-        <div class="grid grid-3">
-          <div class="card">
-            <h3>Join an Initiative</h3>
-            <p>Contribute to one of our active projects. We're always looking for researchers, designers, writers, and advocates who share our values.</p>
-            <ul class="stack-sm">
-              <li>Research participants for user studies</li>
-              <li>Beta testers for digital tools</li>
-              <li>Content creators and writers</li>
-              <li>Event organizers and facilitators</li>
-            </ul>
-            <a href="initiatives.html" class="btn btn--accent" style="margin-top: var(--space-lg);">View Current Projects</a>
+        <div class="content-section">
+          <div class="content-section__header">
+            <h2 class="content-section__title editable" contenteditable="false" data-field="form-title">
+              Send Us a Message
+            </h2>
+            <p class="content-section__subtitle text-balance editable" contenteditable="false" data-field="form-subtitle">
+              Tell us about your project, share your thoughts on mindful technology, or simply introduce yourself.
+            </p>
           </div>
 
-          <div class="card">
-            <h3>Partner with Us</h3>
-            <p>Organizations aligned with our mission can collaborate on research, events, or product development.</p>
-            <ul class="stack-sm">
-              <li>Academic research partnerships</li>
-              <li>Corporate wellness program development</li>
-              <li>Co-working space design consultation</li>
-              <li>Speaking and workshop opportunities</li>
-            </ul>
-            <a href="mailto:partnerships@stillmindsociety.com" class="btn btn--accent" style="margin-top: var(--space-lg);">Discuss Partnership</a>
-          </div>
+          <div class="content-wrapper" style="max-width: 600px;">
+            <form class="stack-lg" action="#" method="POST">
+              <div class="form-group">
+                <label for="name" class="form-label editable" contenteditable="false" data-field="form-name-label">
+                  Your Name
+                </label>
+                <input type="text" id="name" name="name" class="form-input" required>
+              </div>
 
-          <div class="card">
-            <h3>Spread the Word</h3>
-            <p>Help us challenge attention culture by sharing our message and practicing intentional engagement in your own communities.</p>
-            <ul class="stack-sm">
-              <li>Share our content thoughtfully</li>
-              <li>Host "boredom breaks" in your workplace</li>
-              <li>Practice and teach digital wellness</li>
-              <li>Advocate for the right to disconnect</li>
-            </ul>
-            <a href="about.html" class="btn btn--accent" style="margin-top: var(--space-lg);">Learn Our Mission</a>
+              <div class="form-group">
+                <label for="email" class="form-label editable" contenteditable="false" data-field="form-email-label">
+                  Email Address
+                </label>
+                <input type="email" id="email" name="email" class="form-input" required>
+              </div>
+
+              <div class="form-group">
+                <label for="organization" class="form-label editable" contenteditable="false" data-field="form-org-label">
+                  Organization (Optional)
+                </label>
+                <input type="text" id="organization" name="organization" class="form-input">
+              </div>
+
+              <div class="form-group">
+                <label for="subject" class="form-label editable" contenteditable="false" data-field="form-subject-label">
+                  What's this about?
+                </label>
+                <select id="subject" name="subject" class="form-input" required>
+                  <option value="">Select a topic...</option>
+                  <option value="collaboration">Project Collaboration</option>
+                  <option value="speaking">Speaking Opportunity</option>
+                  <option value="research">Research Partnership</option>
+                  <option value="consulting">Consulting Inquiry</option>
+                  <option value="general">General Question</option>
+                  <option value="other">Something Else</option>
+                </select>
+              </div>
+
+              <div class="form-group">
+                <label for="message" class="form-label editable" contenteditable="false" data-field="form-message-label">
+                  Your Message
+                </label>
+                <textarea id="message" name="message" class="form-textarea" rows="6" required placeholder="Tell us about your project, question, or idea..."></textarea>
+              </div>
+
+              <div class="form-group">
+                <button type="submit" class="btn btn--primary">
+                  <span class="editable" contenteditable="false" data-field="form-submit-text">Send Message</span>
+                </button>
+              </div>
+            </form>
           </div>
         </div>
       </div>
     </section>
 
-    <!-- Communication Philosophy -->
+    <!-- Social & Alternative Contact -->
     <section class="section">
       <div class="container">
-        <div class="grid grid-2">
-          <div>
-            <h2>Our Communication Philosophy</h2>
-            <p>We practice what we preach about intentional communication. Here's what you can expect when you reach out to Still Mind Society:</p>
+        <div class="content-section">
+          <div class="content-section__header">
+            <h2 class="content-section__title editable" contenteditable="false" data-field="social-title">
+              Find Us Elsewhere
+            </h2>
+            <p class="content-section__subtitle text-balance editable" contenteditable="false" data-field="social-subtitle">
+              We maintain a mindful presence on select platforms.
+            </p>
+          </div>
 
-            <div class="stack-lg">
-              <div>
-                <h3>Thoughtful, Not Immediate</h3>
-                <p>We don't promise instant responses because we don't believe in instant culture. We take time to read your message carefully and respond meaningfully.</p>
-              </div>
+          <div class="three-column">
+            <div class="feature-block">
+              <span class="feature-block__icon">📝</span>
+              <h3 class="feature-block__title editable" contenteditable="false" data-field="platform1-title">
+                Newsletter
+              </h3>
+              <p class="feature-block__description editable" contenteditable="false" data-field="platform1-desc">
+                Monthly reflections on technology, creativity, and the art of meaningful pause. No spam, just thoughtful content.
+              </p>
+            </div>
 
-              <div>
-                <h3>Quality Over Quantity</h3>
-                <p>We'd rather have one meaningful conversation than a dozen superficial exchanges. We're selective about commitments to ensure we can give our full attention to each collaboration.</p>
-              </div>
+            <div class="feature-block">
+              <span class="feature-block__icon">🐦</span>
+              <h3 class="feature-block__title editable" contenteditable="false" data-field="platform2-title">
+                Twitter/X
+              </h3>
+              <p class="feature-block__description editable" contenteditable="false" data-field="platform2-desc">
+                Occasional thoughts and links, shared with intention rather than obligation. We post when we have something worth saying.
+              </p>
+            </div>
 
-              <div>
-                <h3>Human-Centered</h3>
-                <p>No chatbots, auto-responders, or form letters. Every message is read and responded to by an actual human being who cares about your ideas.</p>
-              </div>
+            <div class="feature-block">
+              <span class="feature-block__icon">💼</span>
+              <h3 class="feature-block__title editable" contenteditable="false" data-field="platform3-title">
+                LinkedIn
+              </h3>
+              <p class="feature-block__description editable" contenteditable="false" data-field="platform3-desc">
+                Professional updates, industry insights, and connections with like-minded organizations and individuals.
+              </p>
             </div>
           </div>
-
-          <div class="card">
-            <h3>Response Timeline</h3>
-            <p>To set proper expectations and respect everyone's time:</p>
-            <ul class="stack-sm">
-              <li><strong>General inquiries:</strong> 24-48 hours</li>
-              <li><strong>Partnership proposals:</strong> 3-5 business days</li>
-              <li><strong>Research collaborations:</strong> 1-2 weeks</li>
-              <li><strong>Speaking requests:</strong> 1 week</li>
-            </ul>
-
-            <p style="margin-top: var(--space-lg);"><strong>Why the wait?</strong> We believe your message deserves thoughtful consideration, not a rushed response. We also practice digital wellness by checking email at scheduled times rather than constantly.</p>
-
-            <p><em>If your inquiry is truly urgent, please indicate that in your subject line and we'll prioritize accordingly.</em></p>
-          </div>
         </div>
       </div>
     </section>
 
-    <!-- Social & Newsletter -->
+    <!-- Expectations -->
     <section class="section">
-      <div class="container text-center">
-        <div class="card" style="max-width: 600px; margin: 0 auto;">
-          <h2>Stay Connected (Mindfully)</h2>
-          <p class="text-balance">Follow our work and join conversations about creating more intentional relationships with technology.</p>
-
-          <div class="cluster" style="justify-content: center; margin: var(--space-xl) 0;">
-            <a href="#" class="btn btn--subtle">Newsletter</a>
-            <a href="#" class="btn btn--subtle">Twitter</a>
-            <a href="#" class="btn btn--subtle">Instagram</a>
-            <a href="#" class="btn btn--subtle">LinkedIn</a>
-          </div>
-
-          <p style="font-size: var(--font-size-sm); opacity: 0.8;">
-            <em>We post sparingly and with intention. No daily content, no engagement hacking—just meaningful updates when we have something worth sharing.</em>
+      <div class="container">
+        <div class="quote-block">
+          <p class="quote-block__text editable" contenteditable="false" data-field="expectations-quote">
+            We believe great conversations happen when both parties have space to think. Don't expect immediate responses—expect thoughtful ones. We're building relationships, not managing transactions.
           </p>
+          <cite class="quote-block__author editable" contenteditable="false" data-field="expectations-author">
+            — Our Communication Values
+          </cite>
         </div>
       </div>
     </section>
@@ -236,5 +254,106 @@
   <div data-include="assets/reusables/footer.html"></div>
 
   <script src="assets/js/includes.js"></script>
+  <script>
+    // Content Management System functionality
+    let cmsMode = false;
+    let originalContent = {};
+
+    function toggleCMSMode() {
+      cmsMode = !cmsMode;
+      const body = document.body;
+      const toolbar = document.getElementById('cms-toolbar');
+      const editables = document.querySelectorAll('.editable');
+
+      if (cmsMode) {
+        body.classList.add('cms-mode-active');
+        toolbar.classList.add('active');
+
+        editables.forEach(el => {
+          originalContent[el.dataset.field] = el.innerHTML;
+          el.contentEditable = true;
+          el.classList.add('editable-active');
+        });
+      } else {
+        body.classList.remove('cms-mode-active');
+        toolbar.classList.remove('active');
+
+        editables.forEach(el => {
+          el.contentEditable = false;
+          el.classList.remove('editable-active');
+        });
+      }
+    }
+
+    function savePage() {
+      const editables = document.querySelectorAll('.editable');
+      const changes = {};
+
+      editables.forEach(el => {
+        const field = el.dataset.field;
+        changes[field] = el.innerHTML;
+      });
+
+      localStorage.setItem('sms-contact-content', JSON.stringify(changes));
+      alert('Changes saved! (Demo: saved to localStorage)');
+      console.log('Saved changes:', changes);
+    }
+
+    function resetPage() {
+      if (confirm('Reset all changes to original content?')) {
+        const editables = document.querySelectorAll('.editable');
+
+        editables.forEach(el => {
+          const field = el.dataset.field;
+          if (originalContent[field]) {
+            el.innerHTML = originalContent[field];
+          }
+        });
+
+        localStorage.removeItem('sms-contact-content');
+        alert('Page reset to original content');
+      }
+    }
+
+    function loadSavedContent() {
+      const saved = localStorage.getItem('sms-contact-content');
+      if (saved) {
+        const changes = JSON.parse(saved);
+
+        Object.keys(changes).forEach(field => {
+          const element = document.querySelector(`[data-field="${field}"]`);
+          if (element) {
+            element.innerHTML = changes[field];
+          }
+        });
+      }
+    }
+
+    // Initialize on page load
+    document.addEventListener('DOMContentLoaded', function() {
+      loadSavedContent();
+
+      // Update navigation
+      const navLinks = document.querySelectorAll('.nav-links a');
+      navLinks.forEach(link => {
+        if (link.getAttribute('href') === 'contact.html') {
+          link.setAttribute('aria-current', 'page');
+        }
+      });
+    });
+
+    // Keyboard shortcuts
+    document.addEventListener('keydown', function(e) {
+      if (e.ctrlKey || e.metaKey) {
+        if (e.key === 'e') {
+          e.preventDefault();
+          toggleCMSMode();
+        } else if (e.key === 's' && cmsMode) {
+          e.preventDefault();
+          savePage();
+        }
+      }
+    });
+  </script>
 </body>
 </html>

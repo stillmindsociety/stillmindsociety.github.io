@@ -24,13 +24,25 @@
 
   <div data-include="assets/reusables/header.html"></div>
 
+  <!-- CMS Toggle Button -->
+  <button class="cms-toggle" onclick="toggleCMSMode()" title="Toggle Edit Mode">✏️</button>
+
+  <!-- CMS Toolbar -->
+  <div class="cms-toolbar" id="cms-toolbar">
+    <h4>Edit Mode</h4>
+    <button onclick="savePage()" class="btn btn--primary btn--sm">Save Changes</button>
+    <button onclick="resetPage()" class="btn btn--subtle btn--sm">Reset</button>
+  </div>
+
   <main id="main" role="main">
     <!-- Hero Section -->
     <section class="section section--hero">
       <div class="container">
         <div class="hero">
-          <h1 class="hero__title text-balance">About Still Mind Society</h1>
-          <p class="hero__subtitle text-balance">
+          <h1 class="hero__title text-balance editable" contenteditable="false" data-field="about-hero-title">
+            About Still Mind Society
+          </h1>
+          <p class="hero__subtitle text-balance editable" contenteditable="false" data-field="about-hero-subtitle">
             Founded on the belief that stillness is not emptiness, but fullness—a space where creativity, innovation, and authentic connection can flourish.
           </p>
         </div>
@@ -40,24 +52,39 @@
     <!-- Our Story -->
     <section class="section">
       <div class="container">
-        <div class="grid grid-2">
-          <div>
-            <h2>Our Story</h2>
-            <p>Still Mind Society emerged from a simple observation: in our rush to stay constantly connected and perpetually productive, we've lost touch with the profound power of pause.</p>
-            <p>We are four creators—an interior designer, graphic designer, game developer, and digital designer—who recognized that our most breakthrough ideas didn't come during endless Slack notifications or infinite scroll sessions. They came during walks, showers, and those "boring" moments when our minds were free to wander.</p>
-            <p>Our cracked circle logo represents this philosophy perfectly. It's not a broken circle—it's a circle that has opened to infinite possibility. The crack is where the light gets in, where new ideas emerge, where stillness transforms into creative energy.</p>
+        <div class="two-column">
+          <div class="text-content">
+            <h2 class="editable" contenteditable="false" data-field="story-title">Our Story</h2>
+            <div class="stack">
+              <p class="editable" contenteditable="false" data-field="story-p1">
+                Still Mind Society emerged from a simple observation: in our rush to stay constantly connected and perpetually productive, we've lost touch with the profound power of pause.
+              </p>
+              <p class="editable" contenteditable="false" data-field="story-p2">
+                We are four creators—an interior designer, graphic designer, game developer, and digital designer—who recognized that our most breakthrough ideas didn't come during endless Slack notifications or infinite scroll sessions. They came during walks, showers, and those "boring" moments when our minds were free to wander.
+              </p>
+              <p class="editable" contenteditable="false" data-field="story-p3">
+                Our cracked circle logo represents this philosophy perfectly. It's not a broken circle—it's a circle that has opened to infinite possibility. The crack is where the light gets in, where new ideas emerge, where stillness transforms into creative energy.
+              </p>
+            </div>
           </div>
-          <div class="card">
-            <h3>The Cracked Circle</h3>
-            <p>Our brand symbol embodies the beautiful paradox of our mission. A perfect circle represents completeness, stillness, the meditative state. But it's the crack—the deliberate disruption—that makes it powerful.</p>
-            <p>This crack represents:</p>
-            <ul class="stack-sm">
-              <li>The moment boredom becomes creativity</li>
-              <li>The break in routine that sparks innovation</li>
-              <li>The pause that allows reflection</li>
-              <li>The stillness that contains infinite potential</li>
-            </ul>
-            <p>It's calmness, deliberately disrupted—not destroyed, but transformed.</p>
+
+          <div class="sidebar">
+            <h3 class="editable" contenteditable="false" data-field="symbol-title">The Cracked Circle</h3>
+            <div class="stack-sm">
+              <p class="editable" contenteditable="false" data-field="symbol-desc">
+                Our brand symbol embodies the beautiful paradox of our mission. A perfect circle represents completeness, stillness, the meditative state. But it's the crack—the deliberate disruption—that makes it powerful.
+              </p>
+              <p class="editable" contenteditable="false" data-field="symbol-represents">This crack represents:</p>
+              <ul class="stack-xs">
+                <li class="editable" contenteditable="false" data-field="symbol-1">The moment boredom becomes creativity</li>
+                <li class="editable" contenteditable="false" data-field="symbol-2">The break in routine that sparks innovation</li>
+                <li class="editable" contenteditable="false" data-field="symbol-3">The pause that allows reflection</li>
+                <li class="editable" contenteditable="false" data-field="symbol-4">The stillness that contains infinite potential</li>
+              </ul>
+              <p class="editable" contenteditable="false" data-field="symbol-conclusion">
+                It's calmness, deliberately disrupted—not destroyed, but transformed.
+              </p>
+            </div>
           </div>
         </div>
       </div>
@@ -66,18 +93,35 @@
     <!-- Mission, Vision, Purpose -->
     <section class="section">
       <div class="container">
-        <div class="grid grid-3">
-          <div class="card card--feature">
-            <h2>Mission</h2>
-            <p data-brand-mission>To restore balance in a world of constant stimulation by creating meaningful pauses that foster calm, creativity, and reflection.</p>
+        <div class="content-section">
+          <div class="content-section__header">
+            <h2 class="content-section__title editable" contenteditable="false" data-field="mvp-title">
+              Our Foundation
+            </h2>
+            <p class="content-section__subtitle text-balance editable" contenteditable="false" data-field="mvp-subtitle">
+              The three pillars that define who we are and what we stand for.
+            </p>
           </div>
-          <div class="card card--accent">
-            <h2>Vision</h2>
-            <p data-brand-vision>A future where stillness is celebrated as a catalyst for innovation, authenticity, and wellbeing in our hyperconnected world.</p>
-          </div>
-          <div class="card">
-            <h2>Purpose</h2>
-            <p>Challenge overstimulation; break monotony; reframe silence and downtime; spark creativity; strengthen attention; nurture reconnection.</p>
+
+          <div class="grid grid-3">
+            <div class="card card--feature card--elevated">
+              <h3 class="editable" contenteditable="false" data-field="mission-title">Mission</h3>
+              <p class="editable" contenteditable="false" data-field="mission-text" data-brand-mission>
+                To restore balance in a world of constant stimulation by creating meaningful pauses that foster calm, creativity, and reflection.
+              </p>
+            </div>
+            <div class="card card--accent card--elevated">
+              <h3 class="editable" contenteditable="false" data-field="vision-title">Vision</h3>
+              <p class="editable" contenteditable="false" data-field="vision-text" data-brand-vision>
+                A future where stillness is celebrated as a catalyst for innovation, authenticity, and wellbeing in our hyperconnected world.
+              </p>
+            </div>
+            <div class="card card--elevated">
+              <h3 class="editable" contenteditable="false" data-field="purpose-title">Purpose</h3>
+              <p class="editable" contenteditable="false" data-field="purpose-text">
+                Challenge overstimulation; break monotony; reframe silence and downtime; spark creativity; strengthen attention; nurture reconnection.
+              </p>
+            </div>
           </div>
         </div>
       </div>
@@ -86,61 +130,127 @@
     <!-- Values Deep Dive -->
     <section class="section">
       <div class="container">
-        <div class="text-center stack-xl">
-          <h2>Our Values in Action</h2>
-          <p class="text-balance">These four principles guide everything we create, from digital experiences to physical spaces.</p>
-        </div>
-
-        <div class="stack-xl">
-          <div class="grid grid-2">
-            <div class="card">
-              <h3>1. Digital Balance</h3>
-              <p><strong>Thrive online while protecting reflective space.</strong></p>
-              <p>We believe technology should amplify human potential, not hijack attention. Our approach to digital design prioritizes intentional interaction over addictive engagement. We create tools that help people connect meaningfully, then step away cleanly.</p>
-            </div>
-            <div class="card">
-              <h3>2. Intentional Rhythm</h3>
-              <p><strong>Know when to speed up and slow down; let stillness speak.</strong></p>
-              <p>Life has natural rhythms—seasons of intense focus and seasons of reflection. We design experiences that honor both states, helping people recognize when to push forward and when to pause, breathe, and listen.</p>
-            </div>
+        <div class="content-section">
+          <div class="content-section__header">
+            <h2 class="content-section__title editable" contenteditable="false" data-field="values-title">
+              Our Values in Action
+            </h2>
+            <p class="content-section__subtitle text-balance editable" contenteditable="false" data-field="values-subtitle">
+              These four principles guide everything we create, from digital experiences to physical spaces.
+            </p>
           </div>
 
-          <div class="grid grid-2">
-            <div class="card">
-              <h3>3. Creative Disruption</h3>
-              <p><strong>Chase norm-challenging ideas and fresh perspectives.</strong></p>
-              <p>True innovation comes from questioning assumptions. We deliberately disrupt conventional thinking about productivity, success, and constant connectivity. Sometimes the most radical act is doing nothing at all.</p>
+          <div class="grid grid-2 grid--gap-lg">
+            <div class="feature-block">
+              <span class="feature-block__icon">⚖️</span>
+              <h3 class="feature-block__title editable" contenteditable="false" data-field="value1-title">
+                Digital Balance
+              </h3>
+              <p class="feature-block__description editable" contenteditable="false" data-field="value1-subtitle">
+                <strong>Thrive online while protecting reflective space.</strong>
+              </p>
+              <p class="text-small editable" contenteditable="false" data-field="value1-desc">
+                We believe technology should amplify human potential, not hijack attention. Our approach to digital design prioritizes intentional interaction over addictive engagement. We create tools that help people connect meaningfully, then step away cleanly.
+              </p>
             </div>
-            <div class="card">
-              <h3>4. Boredom as Gateway</h3>
-              <p><strong>Embrace boredom as a pathway to creativity and connection.</strong></p>
-              <p>Boredom isn't a problem to solve—it's a doorway to walk through. When we stop filling every moment with input, we create space for output, insight, and genuine human connection to emerge naturally.</p>
+
+            <div class="feature-block">
+              <span class="feature-block__icon">🔄</span>
+              <h3 class="feature-block__title editable" contenteditable="false" data-field="value2-title">
+                Purposeful Disruption
+              </h3>
+              <p class="feature-block__description editable" contenteditable="false" data-field="value2-subtitle">
+                <strong>Break patterns that no longer serve growth.</strong>
+              </p>
+              <p class="text-small editable" contenteditable="false" data-field="value2-desc">
+                Not all disruption is progress. We intervene strategically in cycles of overwhelm, creating breaks that restore rather than fragment. Our disruptions are invitations to pause, reflect, and choose a different path forward.
+              </p>
+            </div>
+
+            <div class="feature-block">
+              <span class="feature-block__icon">🎯</span>
+              <h3 class="feature-block__title editable" contenteditable="false" data-field="value3-title">
+                Mindful Innovation
+              </h3>
+              <p class="feature-block__description editable" contenteditable="false" data-field="value3-subtitle">
+                <strong>Create with consciousness and deliberate thought.</strong>
+              </p>
+              <p class="text-small editable" contenteditable="false" data-field="value3-desc">
+                Innovation without intention often creates more problems than it solves. We design from a place of deep consideration, asking not just "can we?" but "should we?" and "what will this nurture or diminish in the world?"
+              </p>
+            </div>
+
+            <div class="feature-block">
+              <span class="feature-block__icon">🌱</span>
+              <h3 class="feature-block__title editable" contenteditable="false" data-field="value4-title">
+                Authentic Connection
+              </h3>
+              <p class="feature-block__description editable" contenteditable="false" data-field="value4-subtitle">
+                <strong>Build genuine relationships through shared stillness.</strong>
+              </p>
+              <p class="text-small editable" contenteditable="false" data-field="value4-desc">
+                Real connection happens in the spaces between words, in comfortable silences, in moments of shared contemplation. We design experiences that foster these deeper forms of human bonding.
+              </p>
             </div>
           </div>
         </div>
       </div>
     </section>
 
-    <!-- Accessibility & Wellbeing -->
+    <!-- Philosophy Section -->
     <section class="section">
       <div class="container">
-        <div class="grid grid-2">
-          <div>
-            <h2>Accessibility & Wellbeing</h2>
-            <p>Our commitment to mental wellbeing extends to digital accessibility. We believe that creating calm, inclusive experiences isn't just good design—it's a moral imperative.</p>
-            <p>Every project we undertake considers:</p>
-            <ul class="stack-sm">
-              <li>Cognitive load and mental energy</li>
-              <li>Sensory sensitivities and overstimulation</li>
-              <li>Diverse ways of processing information</li>
-              <li>The need for control over one's environment</li>
-              <li>Respect for different attention patterns</li>
-            </ul>
+        <div class="quote-block">
+          <p class="quote-block__text editable" contenteditable="false" data-field="philosophy-quote">
+            We believe that in a world obsessed with doing, the revolutionary act is learning how to be. In a culture that fears silence, we create spaces where quiet becomes generative. We don't just advocate for slow living—we design the tools and experiences that make it possible.
+          </p>
+          <cite class="quote-block__author editable" contenteditable="false" data-field="philosophy-author">
+            — Our Collective Philosophy
+          </cite>
+        </div>
+      </div>
+    </section>
+
+    <!-- What Makes Us Different -->
+    <section class="section">
+      <div class="container">
+        <div class="content-section">
+          <div class="content-section__header">
+            <h2 class="content-section__title editable" contenteditable="false" data-field="different-title">
+              What Makes Us Different
+            </h2>
+            <p class="content-section__subtitle text-balance editable" contenteditable="false" data-field="different-subtitle">
+              We're not just talking about balance—we're designing it into existence.
+            </p>
           </div>
-          <div class="card">
-            <h3>Design for Human Flourishing</h3>
-            <p>We reject the attention economy's premise that human focus is a resource to be mined. Instead, we design for human flourishing—creating experiences that leave people feeling energized, not depleted.</p>
-            <p>This means building in natural stopping points, respecting user agency, and always providing an elegant way to disengage. Because the best technology knows when to get out of the way.</p>
+
+          <div class="three-column">
+            <div class="card card--elevated">
+              <h3 class="editable" contenteditable="false" data-field="diff1-title">
+                ✋ Anti-Addiction Design
+              </h3>
+              <p class="editable" contenteditable="false" data-field="diff1-desc">
+                We deliberately design experiences that have natural stopping points, resist infinite scroll, and respect your attention as sacred.
+              </p>
+            </div>
+
+            <div class="card card--elevated">
+              <h3 class="editable" contenteditable="false" data-field="diff2-title">
+                🎨 Contemplative Aesthetics
+              </h3>
+              <p class="editable" contenteditable="false" data-field="diff2-desc">
+                Our visual language prioritizes calm over excitement, depth over flashiness, and space over clutter.
+              </p>
+            </div>
+
+            <div class="card card--elevated">
+              <h3 class="editable" contenteditable="false" data-field="diff3-title">
+                🧠 Cognitive Restoration
+              </h3>
+              <p class="editable" contenteditable="false" data-field="diff3-desc">
+                Everything we create is designed to restore rather than drain mental energy, supporting sustained creativity and focus.
+              </p>
+            </div>
           </div>
         </div>
       </div>
@@ -148,13 +258,18 @@
 
     <!-- Call to Action -->
     <section class="section">
-      <div class="container text-center">
-        <div class="card" style="max-width: 600px; margin: 0 auto;">
-          <h2>Join the Movement</h2>
-          <p class="text-balance">Ready to challenge the culture of constant stimulation? We're building a community of creators, thinkers, and anyone who believes in the power of meaningful pause.</p>
-          <div class="cluster" style="justify-content: center; margin-top: var(--space-xl);">
+      <div class="container">
+        <div class="cta-section">
+          <h2 class="cta-section__title editable" contenteditable="false" data-field="about-cta-title">
+            Join the Movement
+          </h2>
+          <p class="cta-section__description editable" contenteditable="false" data-field="about-cta-description">
+            Ready to explore what it means to be productively still? Whether you're a creator seeking sustainable practices, an organization wanting to support employee wellbeing, or simply someone curious about alternative ways of being—we'd love to connect.
+          </p>
+          <div class="cluster cluster--center">
             <a href="team.html" class="btn btn--primary">Meet Our Team</a>
-            <a href="contact.html" class="btn btn--accent">Get Involved</a>
+            <a href="initiatives.html" class="btn btn--accent">Explore Our Work</a>
+            <a href="contact.html" class="btn btn--subtle">Start a Conversation</a>
           </div>
         </div>
       </div>
@@ -164,5 +279,106 @@
   <div data-include="assets/reusables/footer.html"></div>
 
   <script src="assets/js/includes.js"></script>
+  <script>
+    // Content Management System functionality (same as index.html)
+    let cmsMode = false;
+    let originalContent = {};
+
+    function toggleCMSMode() {
+      cmsMode = !cmsMode;
+      const body = document.body;
+      const toolbar = document.getElementById('cms-toolbar');
+      const editables = document.querySelectorAll('.editable');
+
+      if (cmsMode) {
+        body.classList.add('cms-mode-active');
+        toolbar.classList.add('active');
+
+        editables.forEach(el => {
+          originalContent[el.dataset.field] = el.innerHTML;
+          el.contentEditable = true;
+          el.classList.add('editable-active');
+        });
+      } else {
+        body.classList.remove('cms-mode-active');
+        toolbar.classList.remove('active');
+
+        editables.forEach(el => {
+          el.contentEditable = false;
+          el.classList.remove('editable-active');
+        });
+      }
+    }
+
+    function savePage() {
+      const editables = document.querySelectorAll('.editable');
+      const changes = {};
+
+      editables.forEach(el => {
+        const field = el.dataset.field;
+        changes[field] = el.innerHTML;
+      });
+
+      localStorage.setItem('sms-about-content', JSON.stringify(changes));
+      alert('Changes saved! (Demo: saved to localStorage)');
+      console.log('Saved changes:', changes);
+    }
+
+    function resetPage() {
+      if (confirm('Reset all changes to original content?')) {
+        const editables = document.querySelectorAll('.editable');
+
+        editables.forEach(el => {
+          const field = el.dataset.field;
+          if (originalContent[field]) {
+            el.innerHTML = originalContent[field];
+          }
+        });
+
+        localStorage.removeItem('sms-about-content');
+        alert('Page reset to original content');
+      }
+    }
+
+    function loadSavedContent() {
+      const saved = localStorage.getItem('sms-about-content');
+      if (saved) {
+        const changes = JSON.parse(saved);
+
+        Object.keys(changes).forEach(field => {
+          const element = document.querySelector(`[data-field="${field}"]`);
+          if (element) {
+            element.innerHTML = changes[field];
+          }
+        });
+      }
+    }
+
+    // Initialize on page load
+    document.addEventListener('DOMContentLoaded', function() {
+      loadSavedContent();
+
+      // Update navigation
+      const navLinks = document.querySelectorAll('.nav-links a');
+      navLinks.forEach(link => {
+        if (link.getAttribute('href') === 'about.html') {
+          link.setAttribute('aria-current', 'page');
+        }
+      });
+    });
+
+    // Keyboard shortcuts
+    document.addEventListener('keydown', function(e) {
+      if (e.ctrlKey || e.metaKey) {
+        if (e.key === 'e') {
+          e.preventDefault();
+          toggleCMSMode();
+        } else if (e.key === 's' && cmsMode) {
+          e.preventDefault();
+          savePage();
+        }
+      }
+    });
+  </script>
 </body>
 </html>
