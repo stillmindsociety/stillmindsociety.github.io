@@ -10,6 +10,12 @@ class RealTimeCMS {
     this.originalContent = {};
     this.listeners = new Map();
     this.isAuthenticated = false;
+    this.githubToken = null;
+    this.githubConfig = {
+      owner: 'stillmindsociety',
+      repo: 'stillmindsociety.github.io',
+      branch: 'main'
+    };
     this.initFirebase();
   }
 
@@ -78,6 +84,9 @@ class RealTimeCMS {
         localStorage.setItem('sms-admin-auth', 'true');
         localStorage.setItem('sms-admin-email', user.email);
         this.showAuthenticatedUI();
+
+        // Setup GitHub integration when user authenticates
+        setTimeout(() => this.setupGitHubIntegration(), 1000);
       } else {
         this.isAuthenticated = false;
         localStorage.removeItem('sms-admin-auth');
@@ -351,6 +360,26 @@ class RealTimeCMS {
     const key = `sms-${this.currentPage}-content`;
     localStorage.setItem(key, JSON.stringify(changes));
 
+    // Save to Firebase/Firestore
+    if (this.db && this.isAuthenticated) {
+      try {
+        const { doc, setDoc } = await import('https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js');
+        const docRef = doc(this.db, 'content', this.currentPage);
+
+        await setDoc(docRef, {
+          content: changes,
+          lastModified: new Date().toISOString(),
+          modifiedBy: localStorage.getItem('sms-admin-email'),
+          timestamp: Date.now()
+        }, { merge: true });
+      } catch (error) {
+        console.error('Failed to save to Firestore:', error);
+      }
+    }
+
+    // Commit changes to GitHub
+    await this.commitToGitHub(changes);
+
     // Broadcast to other users
     if (this.channel) {
       this.channel.postMessage({
@@ -362,209 +391,267 @@ class RealTimeCMS {
     }
   }
 
-  resetPage() {
-    if (confirm('Reset all changes to original content? This will affect all users.')) {
-      const editables = document.querySelectorAll('.editable');
+  // GitHub Integration Methods
+  async setupGitHubIntegration() {
+    // Check if GitHub token is stored
+    this.githubToken = localStorage.getItem('sms-github-token');
 
-      editables.forEach(el => {
-        const field = el.dataset.field;
-        if (this.originalContent[field]) {
-          el.innerHTML = this.originalContent[field];
-        }
-      });
-
-      // Clear remote storage
-      const key = `sms-${this.currentPage}-content`;
-      localStorage.removeItem(key);
-
-      // Broadcast reset to other users
-      if (this.channel) {
-        this.channel.postMessage({
-          type: 'content-reset',
-          page: this.currentPage,
-          timestamp: Date.now()
-        });
-      }
-
-      this.showSuccessMessage('Page reset to original content');
+    if (!this.githubToken && this.isAuthenticated) {
+      this.promptForGitHubToken();
     }
   }
 
-  loadSavedContent() {
-    const key = `sms-${this.currentPage}-content`;
-    const saved = localStorage.getItem(key);
+  promptForGitHubToken() {
+    const modal = document.createElement('div');
+    modal.className = 'modal open';
+    modal.innerHTML = `
+      <div class="modal__content">
+        <h2>GitHub Integration Setup</h2>
+        <p>To enable automatic commits, please provide a GitHub Personal Access Token:</p>
+        
+        <div class="form-group">
+          <label for="github-token">GitHub Personal Access Token:</label>
+          <input type="password" id="github-token" class="form-input" placeholder="ghp_...">
+          <small>Token needs 'Contents' write permission for your repository</small>
+        </div>
+        
+        <div class="cluster cluster--center mt-lg">
+          <button onclick="window.cms.saveGitHubToken()" class="btn btn--primary">Save Token</button>
+          <button onclick="window.cms.skipGitHubSetup()" class="btn btn--subtle">Skip for Now</button>
+        </div>
+        
+        <div class="mt-lg">
+          <details>
+            <summary>How to create a GitHub token</summary>
+            <ol class="mt-sm">
+              <li>Go to GitHub Settings → Developer settings → Personal access tokens</li>
+              <li>Generate new token (classic)</li>
+              <li>Select "Contents" permission</li>
+              <li>Copy the token and paste it above</li>
+            </ol>
+          </details>
+        </div>
+      </div>
+    `;
+    document.body.appendChild(modal);
+  }
 
-    if (saved) {
-      try {
-        const changes = JSON.parse(saved);
-        this.applyChanges(changes);
-      } catch (error) {
-        console.error('Failed to load saved content:', error);
-      }
+  saveGitHubToken() {
+    const tokenInput = document.getElementById('github-token');
+    const token = tokenInput.value.trim();
+
+    if (token) {
+      this.githubToken = token;
+      localStorage.setItem('sms-github-token', token);
+      this.showSuccessMessage('GitHub token saved! Automatic commits enabled.');
+      document.querySelector('.modal').remove();
+    } else {
+      this.showErrorMessage('Please enter a valid GitHub token');
     }
   }
 
-  applyChanges(changes) {
-    Object.keys(changes).forEach(field => {
-      const element = document.querySelector(`[data-field="${field}"]`);
-      if (element && changes[field] !== undefined) {
-        element.innerHTML = changes[field];
-      }
-    });
+  skipGitHubSetup() {
+    document.querySelector('.modal').remove();
+    this.showSuccessMessage('GitHub integration skipped. You can set it up later in settings.');
   }
 
-  handleRemoteUpdate(changes) {
-    // Don't apply changes if we're currently in edit mode to prevent conflicts
-    if (this.cmsMode) {
+  showGitHubSettings() {
+    const hasToken = !!this.githubToken;
+    const modal = document.createElement('div');
+    modal.className = 'modal open';
+    modal.innerHTML = `
+      <div class="modal__content">
+        <button class="modal__close" onclick="this.parentElement.parentElement.remove()">&times;</button>
+        <h2>GitHub Integration Settings</h2>
+        
+        <div class="stack-lg">
+          <div class="form-group">
+            <label>Repository:</label>
+            <p><strong>${this.githubConfig.owner}/${this.githubConfig.repo}</strong></p>
+          </div>
+          
+          <div class="form-group">
+            <label>Branch:</label>
+            <p><strong>${this.githubConfig.branch}</strong></p>
+          </div>
+          
+          <div class="form-group">
+            <label>Status:</label>
+            <p><strong>${hasToken ? '✅ Connected' : '❌ Not configured'}</strong></p>
+          </div>
+          
+          <div class="form-group">
+            <label for="github-token-settings">GitHub Personal Access Token:</label>
+            <input type="password" id="github-token-settings" class="form-input" 
+                   value="${hasToken ? '••••••••••••••••' : ''}" 
+                   placeholder="ghp_...">
+            <small>Token needs 'Contents' write permission for your repository</small>
+          </div>
+        </div>
+        
+        <div class="cluster cluster--center mt-lg">
+          <button onclick="window.cms.updateGitHubToken()" class="btn btn--primary">
+            ${hasToken ? 'Update Token' : 'Save Token'}
+          </button>
+          ${hasToken ? '<button onclick="window.cms.removeGitHubToken()" class="btn btn--danger">Remove Token</button>' : ''}
+          <button onclick="this.parentElement.parentElement.parentElement.remove()" class="btn btn--subtle">Close</button>
+        </div>
+        
+        <div class="mt-lg">
+          <details>
+            <summary>How to create a GitHub token</summary>
+            <ol class="mt-sm">
+              <li>Go to <a href="https://github.com/settings/tokens" target="_blank">GitHub Settings → Personal access tokens</a></li>
+              <li>Click "Generate new token (classic)"</li>
+              <li>Select "repo" scope (includes Contents permission)</li>
+              <li>Copy the token and paste it above</li>
+            </ol>
+          </details>
+        </div>
+        
+        <div class="mt-lg">
+          <h3>How it works:</h3>
+          <ul class="stack-sm">
+            <li>When you save changes, they're committed to GitHub automatically</li>
+            <li>Each commit includes details about what was changed and by whom</li>
+            <li>Your GitHub Pages site will update automatically</li>
+            <li>Full version history is maintained in your repository</li>
+          </ul>
+        </div>
+      </div>
+    `;
+    document.body.appendChild(modal);
+  }
+
+  updateGitHubToken() {
+    const tokenInput = document.getElementById('github-token-settings');
+    const token = tokenInput.value.trim();
+
+    if (token && token !== '••••••••••••••••') {
+      this.githubToken = token;
+      localStorage.setItem('sms-github-token', token);
+      this.showSuccessMessage('GitHub token updated! Automatic commits enabled.');
+      document.querySelector('.modal').remove();
+    } else {
+      this.showErrorMessage('Please enter a valid GitHub token');
+    }
+  }
+
+  removeGitHubToken() {
+    if (confirm('Remove GitHub integration? You can always set it up again later.')) {
+      this.githubToken = null;
+      localStorage.removeItem('sms-github-token');
+      this.showSuccessMessage('GitHub integration removed.');
+      document.querySelector('.modal').remove();
+    }
+  }
+
+  async commitToGitHub(changes) {
+    if (!this.githubToken) {
+      console.log('No GitHub token available, skipping commit');
       return;
     }
 
-    // Apply changes from other users
-    this.applyChanges(changes);
+    try {
+      const adminEmail = localStorage.getItem('sms-admin-email');
+      const currentPageFile = this.currentPage === 'index' ? 'index.html' : `${this.currentPage}.html`;
 
-    // Only show update notification to non-admin users
-    if (!this.isAuthenticated) {
-      this.showUpdateIndicator();
+      // Get current file content
+      const fileContent = await this.getGitHubFileContent(currentPageFile);
+      if (!fileContent) return;
+
+      // Apply changes to HTML content
+      const updatedContent = this.applyChangesToHTML(fileContent.content, changes);
+
+      // Create commit
+      await this.createGitHubCommit(currentPageFile, updatedContent, fileContent.sha, changes, adminEmail);
+
+      this.showSuccessMessage('✨ Changes committed to GitHub successfully!');
+
+    } catch (error) {
+      console.error('GitHub commit failed:', error);
+      this.showErrorMessage('Failed to commit to GitHub. Changes saved locally.');
     }
   }
 
-  showEditIndicators(editables) {
-    editables.forEach(el => {
-      if (!el.querySelector('.edit-indicator')) {
-        const indicator = document.createElement('span');
-        indicator.className = 'edit-indicator';
-        indicator.innerHTML = '✏️';
-        el.appendChild(indicator);
+  async getGitHubFileContent(filename) {
+    try {
+      const response = await fetch(`https://api.github.com/repos/${this.githubConfig.owner}/${this.githubConfig.repo}/contents/${filename}`, {
+        headers: {
+          'Authorization': `Bearer ${this.githubToken}`,
+          'Accept': 'application/vnd.github.v3+json'
+        }
+      });
+
+      if (!response.ok) {
+        throw new Error(`GitHub API error: ${response.status}`);
       }
-    });
-  }
 
-  hideEditIndicators(editables) {
-    editables.forEach(el => {
-      const indicator = el.querySelector('.edit-indicator');
-      if (indicator) {
-        indicator.remove();
-      }
-    });
-  }
-
-  showSaveIndicator(field) {
-    const element = document.querySelector(`[data-field="${field}"]`);
-    if (element) {
-      this.showTemporaryIndicator(element, '💾', 'Saved');
-    }
-  }
-
-  showErrorIndicator(field) {
-    const element = document.querySelector(`[data-field="${field}"]`);
-    if (element) {
-      this.showTemporaryIndicator(element, '❌', 'Save failed');
-    }
-  }
-
-  showUpdateIndicator() {
-    this.showTemporaryMessage('🔄 Content updated by another user', 'info');
-  }
-
-  showTemporaryIndicator(element, icon, message) {
-    const indicator = document.createElement('div');
-    indicator.className = 'temp-indicator';
-    indicator.innerHTML = `${icon} ${message}`;
-    indicator.style.cssText = `
-      position: absolute;
-      top: -30px;
-      right: 0;
-      background: var(--accent);
-      color: var(--bg);
-      padding: 4px 8px;
-      border-radius: 4px;
-      font-size: 12px;
-      z-index: 1001;
-      opacity: 0;
-      transition: opacity 0.3s ease;
-    `;
-
-    element.style.position = 'relative';
-    element.appendChild(indicator);
-
-    // Animate in
-    setTimeout(() => indicator.style.opacity = '1', 10);
-
-    // Remove after delay
-    setTimeout(() => {
-      if (indicator.parentNode) {
-        indicator.style.opacity = '0';
-        setTimeout(() => {
-          if (indicator.parentNode) {
-            indicator.parentNode.removeChild(indicator);
-          }
-        }, 300);
-      }
-    }, 2000);
-  }
-
-  showSuccessMessage(message) {
-    this.showTemporaryMessage(message, 'success');
-  }
-
-  showErrorMessage(message) {
-    this.showTemporaryMessage(message, 'error');
-  }
-
-  showTemporaryMessage(message, type = 'info') {
-    const toast = document.createElement('div');
-    toast.className = `toast toast--${type}`;
-    toast.textContent = message;
-    toast.style.cssText = `
-      position: fixed;
-      bottom: 20px;
-      left: 50%;
-      transform: translateX(-50%) translateY(100%);
-      background: ${type === 'error' ? '#ff4444' : type === 'success' ? '#44ff44' : 'var(--accent)'};
-      color: ${type === 'error' || type === 'success' ? '#000' : 'var(--bg)'};
-      padding: 12px 20px;
-      border-radius: 8px;
-      font-size: 14px;
-      box-shadow: 0 4px 12px rgba(0,0,0,0.15);
-      z-index: 10000;
-      opacity: 0;
-      transition: all 0.3s ease;
-      white-space: nowrap;
-    `;
-
-    document.body.appendChild(toast);
-
-    // Animate in
-    setTimeout(() => {
-      toast.style.opacity = '1';
-      toast.style.transform = 'translateX(-50%) translateY(0)';
-    }, 10);
-
-    // Remove after delay
-    setTimeout(() => {
-      if (toast.parentNode) {
-        toast.style.opacity = '0';
-        toast.style.transform = 'translateX(-50%) translateY(100%)';
-        setTimeout(() => {
-          if (toast.parentNode) {
-            toast.parentNode.removeChild(toast);
-          }
-        }, 300);
-      }
-    }, 4000);
-  }
-
-  // Utility method for debouncing
-  debounce(func, wait) {
-    let timeout;
-    return function executedFunction(...args) {
-      const later = () => {
-        clearTimeout(timeout);
-        func(...args);
+      const data = await response.json();
+      return {
+        content: atob(data.content), // Decode base64
+        sha: data.sha
       };
-      clearTimeout(timeout);
-      timeout = setTimeout(later, wait);
-    };
+    } catch (error) {
+      console.error('Failed to get GitHub file content:', error);
+      return null;
+    }
+  }
+
+  applyChangesToHTML(htmlContent, changes) {
+    let updatedContent = htmlContent;
+
+    // Apply each change to the HTML content
+    Object.keys(changes).forEach(field => {
+      const fieldValue = changes[field];
+
+      // Find and replace content in data-field attributes
+      const regex = new RegExp(`(<[^>]*data-field="${field}"[^>]*>)(.*?)(<\/[^>]+>)`, 'gms');
+      updatedContent = updatedContent.replace(regex, `$1${fieldValue}$3`);
+    });
+
+    return updatedContent;
+  }
+
+  async createGitHubCommit(filename, content, sha, changes, authorEmail) {
+    const changedFields = Object.keys(changes);
+    const commitMessage = `Update ${this.currentPage} page content
+
+Modified fields: ${changedFields.join(', ')}
+Updated by: ${authorEmail}
+Timestamp: ${new Date().toISOString()}
+
+Changes made through CMS interface`;
+
+    const response = await fetch(`https://api.github.com/repos/${this.githubConfig.owner}/${this.githubConfig.repo}/contents/${filename}`, {
+      method: 'PUT',
+      headers: {
+        'Authorization': `Bearer ${this.githubToken}`,
+        'Accept': 'application/vnd.github.v3+json',
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify({
+        message: commitMessage,
+        content: btoa(content), // Encode to base64
+        sha: sha,
+        branch: this.githubConfig.branch,
+        committer: {
+          name: 'CMS Auto-Commit',
+          email: 'cms@stillmindsociety.com'
+        },
+        author: {
+          name: authorEmail.split('@')[0],
+          email: authorEmail
+        }
+      })
+    });
+
+    if (!response.ok) {
+      const error = await response.json();
+      throw new Error(`GitHub commit failed: ${error.message}`);
+    }
+
+    return await response.json();
   }
 }
 
