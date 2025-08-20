@@ -1,0 +1,104 @@
+{
+  "brandName": "Still Mind Society",
+  "tagline": "Calmness, deliberately disrupted.",
+  "mission": "To restore balance in a world of constant stimulation by creating meaningful pauses that foster calm, creativity, and reflection.",
+  "vision": "A future where stillness is celebrated as a catalyst for innovation, authenticity, and wellbeing in our hyperconnected world.",
+  "purpose": "Challenge overstimulation; break monotony; reframe silence and downtime; spark creativity; strengthen attention; nurture reconnection.",
+  "values": [
+    {
+      "title": "Digital Balance",
+      "description": "Thrive online while protecting reflective space and mental clarity."
+    },
+    {
+      "title": "Intentional Rhythm",
+      "description": "Know when to speed up and slow down; let stillness speak volumes."
+    },
+    {
+      "title": "Creative Disruption",
+      "description": "Chase norm-challenging ideas and embrace fresh perspectives."
+    },
+    {
+      "title": "Boredom as Gateway",
+      "description": "Embrace boredom as a pathway to creativity and deeper connection."
+    }
+  ],
+  "team": [
+    {
+      "name": "Hannah",
+      "role": "Interior Designer",
+      "bio": "Creates spaces that encourage mindful living and contemplative design.",
+      "avatar": "H"
+    },
+    {
+      "name": "Sanaa",
+      "role": "Graphic Designer",
+      "bio": "Crafts visual narratives that challenge conventional design thinking.",
+      "avatar": "S"
+    },
+    {
+      "name": "Matthew",
+      "role": "Game Designer & Developer",
+      "bio": "Builds interactive experiences that promote mindful engagement.",
+      "avatar": "M"
+    },
+    {
+      "name": "Kiaryn",
+      "role": "Digital Designer",
+      "bio": "Designs digital experiences that balance stimulation with reflection.",
+      "avatar": "K"
+    }
+  ],
+  "initiatives": [
+    {
+      "title": "Mindful Spaces Project",
+      "description": "Designing physical and digital environments that promote contemplative thinking.",
+      "tags": ["Design", "Wellness", "Architecture"],
+      "status": "Active"
+    },
+    {
+      "title": "Boredom Revival Campaign",
+      "description": "A movement to reclaim unstructured time and celebrate mental downtime.",
+      "tags": ["Culture", "Psychology", "Advocacy"],
+      "status": "Planning"
+    },
+    {
+      "title": "Attention Economics Research",
+      "description": "Investigating the true cost of constant connectivity on creativity and focus.",
+      "tags": ["Research", "Technology", "Society"],
+      "status": "Active"
+    },
+    {
+      "title": "Stillness in Motion",
+      "description": "Interactive installations that explore the paradox of finding calm in movement.",
+      "tags": ["Art", "Installation", "Interactive"],
+      "status": "Concept"
+    },
+    {
+      "title": "Digital Detox Toolkit",
+      "description": "Practical resources and techniques for creating healthy boundaries with technology.",
+      "tags": ["Tools", "Wellness", "Digital Health"],
+      "status": "Development"
+    },
+    {
+      "title": "Contemplative Gaming",
+      "description": "Game experiences designed to slow down thinking and encourage reflection.",
+      "tags": ["Gaming", "Mindfulness", "Design"],
+      "status": "Prototype"
+    }
+  ],
+  "colors": {
+    "cyberPurple": "#9D00FF",
+    "neonLime": "#C6FF00",
+    "boneWhite": "#F3F1ED",
+    "charcoal": "#1A1A1A"
+  },
+  "contact": {
+    "email": "hello@stillmindsociety.com",
+    "social": {
+      "twitter": "@stillmindsociety",
+      "instagram": "@stillmindsociety",
+      "linkedin": "company/still-mind-society"
+    }
+  }
+}
+
