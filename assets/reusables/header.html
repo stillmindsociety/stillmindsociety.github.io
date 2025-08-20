@@ -16,8 +16,36 @@
           <li><a href="team.html">Team</a></li>
           <li><a href="initiatives.html">Initiatives</a></li>
           <li><a href="contact.html">Contact</a></li>
+          <li id="admin-nav" style="display: none;">
+            <a href="login.html" id="admin-link">Admin</a>
+          </li>
         </ul>
       </nav>
     </div>
   </div>
 </header>
+
+<script>
+// Show/hide admin navigation based on auth state
+function updateAdminNav() {
+  const adminNav = document.getElementById('admin-nav');
+  const adminLink = document.getElementById('admin-link');
+  const isAuthenticated = localStorage.getItem('sms-admin-auth') === 'true';
+  const adminEmail = localStorage.getItem('sms-admin-email');
+
+  if (isAuthenticated && adminEmail) {
+    adminNav.style.display = 'block';
+    adminLink.textContent = '👤 Admin';
+    adminLink.title = `Signed in as ${adminEmail}`;
+  } else {
+    adminNav.style.display = 'none';
+  }
+}
+
+// Update admin nav on page load and storage changes
+document.addEventListener('DOMContentLoaded', updateAdminNav);
+window.addEventListener('storage', updateAdminNav);
+
+// Check periodically for auth state changes
+setInterval(updateAdminNav, 1000);
+</script>
