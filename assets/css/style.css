@@ -703,6 +703,27 @@ a:focus-visible {
   display: none;
 }
 
+/* Admin Navigation Link Styling */
+.nav-admin-link {
+  /* Inherits all nav-links a styles */
+}
+
+.nav-admin-link--authenticated {
+  background: var(--surface-elevated);
+  border: 1px solid rgba(157, 0, 255, 0.2);
+  color: var(--accent-2);
+}
+
+.nav-admin-link--authenticated:hover {
+  background: var(--accent);
+  color: var(--bg);
+  border-color: var(--accent);
+}
+
+.nav-admin-link--authenticated::after {
+  background: var(--accent);
+}
+
 /* Mobile Navigation Enhancement */
 @media (max-width: 768px) {
   .nav-toggle {
@@ -781,51 +802,26 @@ a:focus-visible {
   gap: var(--space-lg);
 }
 
-/* Enhanced Content Sections */
-.content-section {
-  margin-bottom: var(--space-4xl);
-}
-
-.content-section__header {
-  text-align: center;
-  margin-bottom: var(--space-3xl);
-  max-width: 800px;
-  margin-left: auto;
-  margin-right: auto;
-}
-
-.content-section__title {
-  font-size: var(--font-size-3xl);
-  font-weight: 700;
-  margin-bottom: var(--space-lg);
-  background: linear-gradient(135deg, var(--accent), var(--accent-2));
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-  background-clip: text;
-}
-
-.content-section__subtitle {
-  font-size: var(--font-size-lg);
-  color: rgba(243, 241, 237, 0.8);
-  line-height: 1.6;
-}
-
-/* Editable Content Styles */
+/* Enhanced Editable Content */
 .editable {
   position: relative;
-  transition: all var(--transition-fast);
-  border-radius: var(--border-radius);
+  transition: var(--transition-fast);
+  border-radius: 4px;
 }
 
+/* Remove hover effects for normal users - only show in CMS mode */
 .editable:hover {
-  background: rgba(157, 0, 255, 0.05);
-  box-shadow: 0 0 0 2px rgba(157, 0, 255, 0.2);
+  /* No hover effects for normal users */
 }
 
 .editable[contenteditable="true"] {
-  background: rgba(157, 0, 255, 0.1);
-  box-shadow: 0 0 0 2px var(--accent);
   outline: none;
+  padding: var(--space-xs);
+  margin: calc(var(--space-xs) * -1);
+  border-radius: 4px;
+  background: rgba(157, 0, 255, 0.1);
+  border: 1px solid rgba(157, 0, 255, 0.3);
+  transition: all var(--transition-fast);
 }
 
 .edit-indicator {
@@ -834,61 +830,57 @@ a:focus-visible {
   right: -8px;
   background: var(--accent);
   color: var(--bg);
-  border-radius: 50%;
-  width: 20px;
-  height: 20px;
-  display: none; /* Hidden by default */
-  align-items: center;
-  justify-content: center;
-  font-size: 12px;
+  font-size: 10px;
+  padding: 2px 4px;
+  border-radius: 3px;
   opacity: 0;
-  transition: opacity var(--transition-fast);
   pointer-events: none;
+  transition: opacity var(--transition-fast);
+  z-index: 10;
 }
 
-/* Only show edit indicators in CMS mode */
-.cms-mode-active .edit-indicator {
-  display: flex;
-}
-
+/* Only show edit indicators when in CMS mode and hovering */
 .cms-mode-active .editable:hover .edit-indicator {
   opacity: 1;
 }
 
-/* Enhanced CMS Styles */
-.cms-toolbar {
+/* CMS Controls */
+#cms-toolbar {
   position: fixed;
   top: 20px;
   right: 20px;
   background: var(--surface-elevated);
-  border: 2px solid var(--border);
-  border-radius: var(--border-radius-lg);
+  border: 1px solid var(--border);
+  border-radius: var(--border-radius);
   padding: var(--space-lg);
   box-shadow: var(--shadow-xl);
-  z-index: 999;
-  display: none; /* Hidden by default */
+  backdrop-filter: blur(10px);
+  z-index: 1000;
+  transform: translateX(calc(100% + 40px));
+  transition: transform var(--transition-smooth);
+  min-width: 250px;
 }
 
-.cms-toolbar.active {
-  display: block;
+#cms-toolbar.active {
+  transform: translateX(0);
 }
 
 .cms-toggle {
   position: fixed;
-  bottom: 20px;
+  top: 20px;
   right: 20px;
   background: var(--accent);
   color: var(--bg);
   border: none;
   border-radius: 50%;
-  width: 60px;
-  height: 60px;
-  font-size: 1.5rem;
+  width: 50px;
+  height: 50px;
+  font-size: 20px;
   cursor: pointer;
-  box-shadow: var(--shadow-xl);
-  transition: all var(--transition-fast);
-  z-index: 1000;
-  display: none; /* Hidden by default for normal users */
+  box-shadow: var(--shadow-lg);
+  transition: all var(--transition-smooth);
+  z-index: 1001;
+  display: none; /* Hidden by default for non-authenticated users */
 }
 
 .cms-toggle:hover {
@@ -897,55 +889,46 @@ a:focus-visible {
   box-shadow: var(--shadow-glow);
 }
 
-/* Only show CMS controls when user is authenticated */
-.cms-authenticated .cms-toggle {
-  display: block;
-}
-
-.cms-authenticated .cms-toolbar.active {
-  display: block;
-}
-
 /* Hide all editable styling for normal users */
 .editable {
-  position: relative;
-  transition: all var(--transition-fast);
-  border-radius: var(--border-radius);
+  /* No special styling for normal users */
 }
 
 /* Only show editable styling in CMS mode */
 .cms-mode-active .editable {
-  border: 2px dashed rgba(157, 0, 255, 0.4);
-  padding: var(--space-sm);
-  margin: var(--space-xs);
   position: relative;
+  transition: var(--transition-fast);
+  border-radius: 4px;
 }
 
 .cms-mode-active .editable:hover {
   background: rgba(157, 0, 255, 0.05);
-  box-shadow: 0 0 0 2px rgba(157, 0, 255, 0.2);
+  box-shadow: 0 0 0 1px rgba(157, 0, 255, 0.2);
 }
 
 .cms-mode-active .editable[contenteditable="true"] {
-  background: rgba(157, 0, 255, 0.1);
-  box-shadow: 0 0 0 2px var(--accent);
   outline: none;
+  padding: var(--space-xs);
+  margin: calc(var(--space-xs) * -1);
+  border-radius: 4px;
+  background: rgba(157, 0, 255, 0.1);
+  border: 1px solid rgba(157, 0, 255, 0.3);
 }
 
 .cms-mode-active .editable::after {
   content: '✏️';
   position: absolute;
-  top: -10px;
-  right: -10px;
+  top: -8px;
+  right: -8px;
   background: var(--accent);
   color: var(--bg);
-  border-radius: 50%;
-  width: 24px;
-  height: 24px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  font-size: 12px;
+  font-size: 10px;
+  padding: 2px 4px;
+  border-radius: 3px;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity var(--transition-fast);
+  z-index: 10;
 }
 
 /* Enhanced Responsive Design */

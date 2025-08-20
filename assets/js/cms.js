@@ -426,7 +426,6 @@ class RealTimeCMS {
         const indicator = document.createElement('span');
         indicator.className = 'edit-indicator';
         indicator.innerHTML = '✏️';
-        indicator.title = 'Click to edit - changes sync in real-time';
         el.appendChild(indicator);
       }
     });

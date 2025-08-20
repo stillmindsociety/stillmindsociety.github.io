@@ -17,7 +17,7 @@
           <li><a href="initiatives.html">Initiatives</a></li>
           <li><a href="contact.html">Contact</a></li>
           <li id="admin-nav" style="display: none;">
-            <a href="login.html" id="admin-link">Admin</a>
+            <a href="login.html" id="admin-link" class="nav-admin-link">Admin</a>
           </li>
         </ul>
       </nav>
@@ -35,10 +35,12 @@ function updateAdminNav() {
 
   if (isAuthenticated && adminEmail) {
     adminNav.style.display = 'block';
-    adminLink.textContent = '👤 Admin';
+    adminLink.textContent = 'Admin';
     adminLink.title = `Signed in as ${adminEmail}`;
+    adminLink.classList.add('nav-admin-link--authenticated');
   } else {
     adminNav.style.display = 'none';
+    adminLink.classList.remove('nav-admin-link--authenticated');
   }
 }
 
