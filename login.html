@@ -20,15 +20,34 @@
 
   <div data-include="assets/reusables/header.html"></div>
 
+  <!-- CMS Toolbar (visible only to authenticated admins) -->
+  <div id="cms-toolbar" class="cms-toolbar">
+    <div class="cms-toolbar__content">
+      <div class="cms-toolbar__actions">
+        <button onclick="window.cms?.savePage()" class="btn btn--primary btn--sm">
+          💾 Save Changes
+        </button>
+        <button onclick="window.cms?.resetPage()" class="btn btn--subtle btn--sm">
+          🔄 Reset
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- CMS Toggle Button (visible only to authenticated admins) -->
+  <button class="cms-toggle" onclick="window.cms?.toggleCMSMode()" title="Toggle Edit Mode">
+    ✏️
+  </button>
+
   <main id="main" role="main">
     <!-- Login Hero Section -->
     <section class="section section--hero">
       <div class="container">
         <div class="hero text-center">
-          <h1 class="hero__title text-balance">
+          <h1 class="hero__title text-balance editable" contenteditable="false" data-field="login-hero-title">
             Admin Access
           </h1>
-          <p class="hero__subtitle text-balance">
+          <p class="hero__subtitle text-balance editable" contenteditable="false" data-field="login-hero-subtitle">
             Sign in to access content editing capabilities across the Still Mind Society website.
           </p>
         </div>
@@ -246,6 +265,7 @@
   </script>
 
   <script src="assets/js/includes.js"></script>
+  <script src="assets/js/cms.js"></script>
 
   <style>
     .alert {
