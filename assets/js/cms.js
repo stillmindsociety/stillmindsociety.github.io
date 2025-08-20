@@ -50,6 +50,8 @@ class RealTimeCMS {
 
     if (this.isAuthenticated) {
       this.showAuthenticatedUI();
+      // Setup GitHub integration for authenticated users
+      setTimeout(() => this.setupGitHubIntegration(), 1000);
     } else {
       this.hideAuthenticatedUI();
     }
@@ -457,6 +459,7 @@ class RealTimeCMS {
 
   showGitHubSettings() {
     const hasToken = !!this.githubToken;
+    const displayToken = this.githubToken || '';
     const modal = document.createElement('div');
     modal.className = 'modal open';
     modal.innerHTML = `
@@ -481,11 +484,18 @@ class RealTimeCMS {
           </div>
           
           <div class="form-group">
-            <label for="github-token-settings">GitHub Personal Access Token:</label>
-            <input type="password" id="github-token-settings" class="form-input" 
-                   value="${hasToken ? '••••••••••••••••' : ''}" 
-                   placeholder="ghp_...">
-            <small>Token needs 'Contents' write permission for your repository</small>
+            <label for="github-token-settings">Current GitHub Personal Access Token:</label>
+            <input type="text" id="github-token-settings" class="form-input" 
+                   value="${displayToken}" 
+                   placeholder="ghp_..." readonly>
+            <small>This token has 'Contents' write permission for your repository</small>
+          </div>
+          
+          <div class="form-group">
+            <label for="github-token-new">Update Token:</label>
+            <input type="password" id="github-token-new" class="form-input" 
+                   placeholder="Enter new token to update">
+            <small>Leave empty to keep current token</small>
           </div>
         </div>
         
@@ -524,16 +534,19 @@ class RealTimeCMS {
   }
 
   updateGitHubToken() {
-    const tokenInput = document.getElementById('github-token-settings');
-    const token = tokenInput.value.trim();
+    const newTokenInput = document.getElementById('github-token-new');
+    const newToken = newTokenInput.value.trim();
 
-    if (token && token !== '••••••••••••••••') {
-      this.githubToken = token;
-      localStorage.setItem('sms-github-token', token);
+    if (newToken) {
+      this.githubToken = newToken;
+      localStorage.setItem('sms-github-token', newToken);
       this.showSuccessMessage('GitHub token updated! Automatic commits enabled.');
       document.querySelector('.modal').remove();
+    } else if (!this.githubToken) {
+      this.showErrorMessage('Please enter a GitHub token');
     } else {
-      this.showErrorMessage('Please enter a valid GitHub token');
+      // No new token entered, just close modal
+      document.querySelector('.modal').remove();
     }
   }
 
