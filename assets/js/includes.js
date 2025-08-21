@@ -142,6 +142,21 @@ function initSmoothScroll() {
 
 // Form Enhancement
 function initFormEnhancements() {
+  // Check if we're on the contact page and show success message if needed
+  if (window.location.pathname.includes('contact.html') && window.location.search.includes('sent=true')) {
+    const successMessage = document.getElementById('form-success');
+    const contactForm = document.getElementById('contact-form');
+    if (successMessage) {
+      successMessage.style.display = 'block';
+      successMessage.scrollIntoView({ behavior: 'smooth', block: 'center' });
+    }
+    if (contactForm) {
+      contactForm.style.display = 'none';
+    }
+    // Clean up URL
+    window.history.replaceState({}, document.title, window.location.pathname);
+  }
+
   const forms = document.querySelectorAll('form');
 
   forms.forEach(form => {

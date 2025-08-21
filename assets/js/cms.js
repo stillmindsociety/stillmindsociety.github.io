@@ -837,8 +837,21 @@ Changes made through CMS interface`;
 
 // Initialize CMS when DOM is ready
 document.addEventListener('DOMContentLoaded', () => {
-  window.cms = new RealTimeCMS();
+  // Wait for includes to load first
+  if (document.readyState === 'loading') {
+    document.addEventListener('includesLoaded', () => {
+      window.cms = new RealTimeCMS();
+    });
+  } else {
+    // DOM already loaded
+    window.cms = new RealTimeCMS();
+  }
 });
+
+// Also initialize immediately if includes are already loaded
+if (document.readyState === 'complete' || document.readyState === 'interactive') {
+  window.cms = new RealTimeCMS();
+}
 
 // Export for use in other modules
 if (typeof module !== 'undefined' && module.exports) {
