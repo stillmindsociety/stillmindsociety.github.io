@@ -25,6 +25,28 @@
   </div>
 </header>
 
+<!-- CMS Toolbar (visible only to authenticated admins) -->
+<div id="cms-toolbar" class="cms-toolbar" style="display: none;">
+  <div class="cms-toolbar__content">
+    <div class="cms-toolbar__actions">
+      <button onclick="window.cms?.savePage()" class="btn btn--primary btn--sm">
+        💾 Save Changes
+      </button>
+      <button onclick="window.cms?.resetPage()" class="btn btn--subtle btn--sm">
+        🔄 Reset
+      </button>
+      <button onclick="window.cms?.showGitHubSettings()" class="btn btn--subtle btn--sm">
+        ⚙️ GitHub
+      </button>
+    </div>
+  </div>
+</div>
+
+<!-- CMS Toggle Button (visible only to authenticated admins) -->
+<button class="cms-toggle" onclick="window.cms?.toggleCMSMode()" title="Toggle Edit Mode" style="display: none;">
+  ✏️
+</button>
+
 <script>
 // Show/hide admin navigation based on auth state
 function updateAdminNav() {
