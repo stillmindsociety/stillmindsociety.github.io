@@ -1321,6 +1321,30 @@ a:focus-visible {
   box-shadow: var(--shadow-glow);
 }
 
+.cms-save-btn {
+  position: fixed;
+  top: 80px;
+  right: 20px;
+  background: #27ae60;
+  color: white;
+  border: none;
+  border-radius: 50%;
+  width: 50px;
+  height: 50px;
+  font-size: 20px;
+  cursor: pointer;
+  box-shadow: var(--shadow-lg);
+  transition: all var(--transition-smooth);
+  z-index: 1001;
+  display: none; /* Hidden by default, shown only in edit mode */
+}
+
+.cms-save-btn:hover {
+  background: #2ecc71;
+  transform: scale(1.1);
+  box-shadow: 0 0 20px rgba(39, 174, 96, 0.4);
+}
+
 /* Hide all editable styling for normal users */
 .editable {
   /* No special styling for normal users */

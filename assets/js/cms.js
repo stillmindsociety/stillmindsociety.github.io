@@ -222,7 +222,6 @@ class RealTimeCMS {
   }
 
   toggleCMSMode() {
-    // Check authentication before allowing edit mode
     if (!this.isAuthenticated) {
       this.showLoginPrompt();
       return;
@@ -231,11 +230,22 @@ class RealTimeCMS {
     this.cmsMode = !this.cmsMode;
     const body = document.body;
     const toolbar = document.getElementById('cms-toolbar');
+    const saveBtn = document.querySelector('.cms-save-btn');
     const editables = document.querySelectorAll('.editable');
 
     if (this.cmsMode) {
       body.classList.add('cms-mode-active');
-      toolbar.classList.add('active');
+
+      // Hide the complex toolbar and show the simple save button instead
+      if (toolbar) {
+        toolbar.style.display = 'none';
+        toolbar.classList.remove('active');
+      }
+
+      // Show the save button below the edit button
+      if (saveBtn) {
+        saveBtn.style.display = 'block';
+      }
 
       // Store original content and enable editing
       editables.forEach(el => {
@@ -247,10 +257,20 @@ class RealTimeCMS {
 
       // Show edit indicators
       this.showEditIndicators(editables);
-      this.showSuccessMessage('Edit mode activated! Make your changes and click "Save Changes" to save.');
+      this.showSuccessMessage('Edit mode activated! Make your changes and click the save button (💾) below the edit button.');
     } else {
       body.classList.remove('cms-mode-active');
-      toolbar.classList.remove('active');
+
+      // Hide the save button
+      if (saveBtn) {
+        saveBtn.style.display = 'none';
+      }
+
+      // Keep toolbar hidden since we're using the simple save button approach
+      if (toolbar) {
+        toolbar.classList.remove('active');
+        toolbar.style.display = 'none';
+      }
 
       editables.forEach(el => {
         el.contentEditable = false;
