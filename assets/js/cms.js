@@ -187,6 +187,12 @@ class RealTimeCMS {
       indicator.style.cssText = 'margin-bottom: 10px; color: var(--accent-2);';
       toolbar.insertBefore(indicator, toolbar.firstChild);
     }
+
+    // Show admin-only content sections
+    const adminSections = document.querySelectorAll('.admin-only');
+    adminSections.forEach(section => {
+      section.style.display = 'block';
+    });
   }
 
   hideAuthenticatedUI() {
@@ -207,6 +213,12 @@ class RealTimeCMS {
     if (adminIndicator) {
       adminIndicator.remove();
     }
+
+    // Hide admin-only content sections
+    const adminSections = document.querySelectorAll('.admin-only');
+    adminSections.forEach(section => {
+      section.style.display = 'none';
+    });
   }
 
   toggleCMSMode() {
@@ -265,16 +277,6 @@ class RealTimeCMS {
       </div>
     `;
     document.body.appendChild(loginModal);
-  }
-
-  addInputListener(element) {
-    // Remove auto-save functionality - no longer adding input listeners
-    // Content will only save when user clicks "Save Changes" button
-  }
-
-  removeInputListener(element) {
-    // Remove auto-save functionality - no longer removing input listeners
-    // since we're not adding them in the first place
   }
 
   async saveField(field, content) {
@@ -665,6 +667,171 @@ Changes made through CMS interface`;
     }
 
     return await response.json();
+  }
+
+  // Missing utility methods
+  loadSavedContent() {
+    const key = `sms-${this.currentPage}-content`;
+    const savedContent = localStorage.getItem(key);
+
+    if (savedContent) {
+      try {
+        const content = JSON.parse(savedContent);
+        Object.keys(content).forEach(field => {
+          const element = document.querySelector(`[data-field="${field}"]`);
+          if (element) {
+            element.innerHTML = content[field];
+          }
+        });
+      } catch (error) {
+        console.error('Failed to load saved content:', error);
+      }
+    }
+  }
+
+  handleRemoteUpdate(changes) {
+    Object.keys(changes).forEach(field => {
+      const element = document.querySelector(`[data-field="${field}"]`);
+      if (element && !this.cmsMode) {
+        element.innerHTML = changes[field];
+      }
+    });
+  }
+
+  showEditIndicators(editables) {
+    editables.forEach(el => {
+      const indicator = document.createElement('div');
+      indicator.className = 'edit-indicator';
+      indicator.innerHTML = '✏️';
+      indicator.style.cssText = `
+        position: absolute;
+        top: -10px;
+        right: -10px;
+        background: var(--accent-1);
+        color: white;
+        padding: 2px 6px;
+        border-radius: 3px;
+        font-size: 12px;
+        z-index: 1000;
+        pointer-events: none;
+      `;
+
+      el.style.position = 'relative';
+      el.appendChild(indicator);
+    });
+  }
+
+  hideEditIndicators(editables) {
+    editables.forEach(el => {
+      const indicator = el.querySelector('.edit-indicator');
+      if (indicator) {
+        indicator.remove();
+      }
+    });
+  }
+
+  showUpdateIndicator() {
+    this.showSuccessMessage('Content updated by admin', 3000);
+  }
+
+  showSaveIndicator(field) {
+    this.showSuccessMessage(`${field} saved successfully`, 2000);
+  }
+
+  showErrorIndicator(field) {
+    this.showErrorMessage(`Failed to save ${field}`, 3000);
+  }
+
+  showSuccessMessage(message, duration = 5000) {
+    this.showNotification(message, 'success', duration);
+  }
+
+  showErrorMessage(message, duration = 5000) {
+    this.showNotification(message, 'error', duration);
+  }
+
+  showNotification(message, type = 'info', duration = 5000) {
+    // Remove existing notifications
+    const existing = document.querySelectorAll('.cms-notification');
+    existing.forEach(el => el.remove());
+
+    const notification = document.createElement('div');
+    notification.className = `cms-notification cms-notification--${type}`;
+    notification.textContent = message;
+    notification.style.cssText = `
+      position: fixed;
+      bottom: 20px;
+      left: 50%;
+      transform: translateX(-50%);
+      background: ${type === 'error' ? '#e74c3c' : type === 'success' ? '#27ae60' : '#3498db'};
+      color: white;
+      padding: 12px 24px;
+      border-radius: 6px;
+      z-index: 10000;
+      font-size: 14px;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.2);
+      animation: slideInUp 0.3s ease-out;
+      max-width: 400px;
+      text-align: center;
+    `;
+
+    // Add animation styles if not already present
+    if (!document.querySelector('#cms-notification-styles')) {
+      const styles = document.createElement('style');
+      styles.id = 'cms-notification-styles';
+      styles.textContent = `
+        @keyframes slideInUp {
+          from { transform: translate(-50%, 100%); opacity: 0; }
+          to { transform: translate(-50%, 0); opacity: 1; }
+        }
+        @keyframes slideOutDown {
+          from { transform: translate(-50%, 0); opacity: 1; }
+          to { transform: translate(-50%, 100%); opacity: 0; }
+        }
+      `;
+      document.head.appendChild(styles);
+    }
+
+    document.body.appendChild(notification);
+
+    // Auto-remove after duration
+    setTimeout(() => {
+      if (notification.parentNode) {
+        notification.style.animation = 'slideOutDown 0.3s ease-in';
+        setTimeout(() => {
+          if (notification.parentNode) {
+            notification.remove();
+          }
+        }, 300);
+      }
+    }, duration);
+  }
+
+  resetPage() {
+    if (confirm('Reset all changes to original content? This cannot be undone.')) {
+      const editables = document.querySelectorAll('.editable');
+      editables.forEach(el => {
+        const field = el.dataset.field;
+        if (this.originalContent[field]) {
+          el.innerHTML = this.originalContent[field];
+        }
+      });
+
+      // Clear saved content
+      const key = `sms-${this.currentPage}-content`;
+      localStorage.removeItem(key);
+
+      // Broadcast reset to other users
+      if (this.channel) {
+        this.channel.postMessage({
+          type: 'content-reset',
+          page: this.currentPage,
+          timestamp: Date.now()
+        });
+      }
+
+      this.showSuccessMessage('Page content has been reset to original state.');
+    }
   }
 }
 

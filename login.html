@@ -109,7 +109,7 @@
               <h3>Admin Features:</h3>
               <ul class="stack-sm">
                 <li>✏️ Edit any text content in real-time</li>
-                <li>💾 Auto-save changes as you type</li>
+                <li>💾 Manual save when you click "Save Changes"</li>
                 <li>🔄 Sync edits across all users instantly</li>
                 <li>🔒 Secure authentication required</li>
               </ul>
@@ -133,6 +133,72 @@
         </div>
       </div>
     </section>
+
+    <!-- Content Editor Section (Admin Only) -->
+    <section id="admin-content-editor" class="section admin-only" style="display: none;">
+      <div class="container">
+        <div class="content-wrapper">
+          <div class="card card--elevated">
+            <h2 class="mb-xl">🎨 Content Editor</h2>
+
+            <div class="stack-lg">
+              <div class="alert alert--info">
+                <p><strong>Admin Content Management System</strong></p>
+                <p>You have access to edit website content in real-time. Changes are manually saved and automatically committed to GitHub.</p>
+              </div>
+
+              <div class="stack-md">
+                <h3>🔧 Features</h3>
+                <ul class="grid grid--2-cols gap-md">
+                  <li>✏️ <strong>Live Editing:</strong> Edit text content directly on any page</li>
+                  <li>💾 <strong>Manual Save:</strong> Save changes only when you click "Save Changes"</li>
+                  <li>🔄 <strong>Real-time Sync:</strong> Updates appear instantly for all users</li>
+                  <li>📱 <strong>GitHub Integration:</strong> Automatic commits to your repository</li>
+                  <li>🔒 <strong>Secure Access:</strong> Admin authentication required</li>
+                  <li>📝 <strong>Version Control:</strong> Full history maintained in GitHub</li>
+                </ul>
+              </div>
+
+              <div class="stack-md">
+                <h3>⚙️ GitHub Integration</h3>
+                <div class="form-group">
+                  <label for="github-token-display">Current GitHub Personal Access Token:</label>
+                  <div class="cluster gap-sm">
+                    <input type="text" id="github-token-display" class="form-input" readonly placeholder="No token configured">
+                    <button id="manage-github-token" class="btn btn--subtle">Manage Token</button>
+                  </div>
+                  <small>This token enables automatic commits when you save content changes.</small>
+                </div>
+
+                <div class="alert alert--subtle">
+                  <p><strong>Repository:</strong> stillmindsociety/stillmindsociety.github.io</p>
+                  <p><strong>Branch:</strong> main</p>
+                  <p><strong>Status:</strong> <span id="github-status">❌ Not configured</span></p>
+                </div>
+              </div>
+
+              <div class="stack-md">
+                <h3>📋 How to Use</h3>
+                <ol class="stack-sm">
+                  <li>Navigate to any page on the website</li>
+                  <li>Click the ✏️ pencil icon to enter edit mode</li>
+                  <li>Click on any editable text to modify it</li>
+                  <li>Make your changes directly in the content</li>
+                  <li>Click "💾 Save Changes" to save and commit to GitHub</li>
+                  <li>Changes will appear immediately for all users</li>
+                </ol>
+              </div>
+
+              <div class="cluster cluster--center">
+                <a href="index.html" class="btn btn--primary">Start Editing</a>
+                <button onclick="window.cms?.showGitHubSettings()" class="btn btn--subtle">GitHub Settings</button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
   </main>
 
   <div data-include="assets/reusables/footer.html"></div>
@@ -200,39 +266,17 @@
         // Hide any previous errors
         loginError.style.display = 'none';
 
-        // Sign in with Firebase
+        // Attempt to sign in
         await signInWithEmailAndPassword(auth, email, password);
-
-        // Success - the onAuthStateChanged will handle the UI update
 
       } catch (error) {
         console.error('Login error:', error);
 
         // Show error message
-        let message = 'Login failed. Please check your credentials.';
-
-        switch (error.code) {
-          case 'auth/user-not-found':
-            message = 'No account found with this email address.';
-            break;
-          case 'auth/wrong-password':
-            message = 'Incorrect password. Please try again.';
-            break;
-          case 'auth/invalid-email':
-            message = 'Please enter a valid email address.';
-            break;
-          case 'auth/too-many-requests':
-            message = 'Too many failed attempts. Please try again later.';
-            break;
-          case 'auth/user-disabled':
-            message = 'This account has been disabled.';
-            break;
-        }
-
-        errorMessage.textContent = message;
+        errorMessage.textContent = getErrorMessage(error.code);
         loginError.style.display = 'block';
 
-        // Reset button
+        // Reset button state
         submitBtn.textContent = originalText;
         submitBtn.disabled = false;
       }
@@ -242,51 +286,89 @@
     signOutBtn.addEventListener('click', async () => {
       try {
         await signOut(auth);
-        // onAuthStateChanged will handle the UI update
       } catch (error) {
         console.error('Sign out error:', error);
       }
     });
 
-    // UI state management
+    // Helper functions
     function showLoginForm() {
       loginFormContainer.style.display = 'block';
       loggedInState.style.display = 'none';
-      // Clear form
-      document.getElementById('email').value = '';
-      document.getElementById('password').value = '';
-      loginError.style.display = 'none';
+      document.getElementById('admin-content-editor').style.display = 'none';
     }
 
     function showLoggedInState() {
       loginFormContainer.style.display = 'none';
       loggedInState.style.display = 'block';
+      document.getElementById('admin-content-editor').style.display = 'block';
     }
 
-    // Make auth available globally
-    window.smsAuth = { auth, signOut };
+    function getErrorMessage(errorCode) {
+      switch (errorCode) {
+        case 'auth/user-not-found':
+        case 'auth/wrong-password':
+          return 'Invalid email or password. Please try again.';
+        case 'auth/invalid-email':
+          return 'Please enter a valid email address.';
+        case 'auth/user-disabled':
+          return 'This account has been disabled. Please contact support.';
+        case 'auth/too-many-requests':
+          return 'Too many failed attempts. Please wait and try again.';
+        default:
+          return 'Login failed. Please check your credentials and try again.';
+      }
+    }
   </script>
 
+  <!-- Include JS files -->
   <script src="assets/js/includes.js"></script>
   <script src="assets/js/cms.js"></script>
 
-  <style>
-    .alert {
-      padding: var(--space-lg);
-      border-radius: var(--border-radius);
-      border: 1px solid;
-    }
+  <!-- GitHub Token Management -->
+  <script>
+    document.addEventListener('DOMContentLoaded', () => {
+      // Update GitHub token display
+      function updateGitHubTokenDisplay() {
+        const token = localStorage.getItem('sms-github-token');
+        const tokenDisplay = document.getElementById('github-token-display');
+        const statusElement = document.getElementById('github-status');
 
-    .alert--error {
-      background: rgba(255, 68, 68, 0.1);
-      border-color: #ff4444;
-      color: #ff6b6b;
-    }
+        if (token) {
+          tokenDisplay.value = token;
+          statusElement.textContent = '✅ Connected';
+          statusElement.style.color = '#27ae60';
+        } else {
+          tokenDisplay.value = '';
+          tokenDisplay.placeholder = 'No token configured';
+          statusElement.textContent = '❌ Not configured';
+          statusElement.style.color = '#e74c3c';
+        }
+      }
 
-    .alert p {
-      margin: 0;
-      max-width: none;
-    }
-  </style>
+      // Manage GitHub token button
+      document.getElementById('manage-github-token').addEventListener('click', () => {
+        if (window.cms) {
+          window.cms.showGitHubSettings();
+        } else {
+          alert('CMS system not loaded. Please refresh the page and try again.');
+        }
+      });
+
+      // Update display on load and when storage changes
+      updateGitHubTokenDisplay();
+
+      // Listen for storage changes (when token is updated in other tabs)
+      window.addEventListener('storage', (e) => {
+        if (e.key === 'sms-github-token') {
+          updateGitHubTokenDisplay();
+        }
+      });
+
+      // Also update when CMS loads
+      setTimeout(updateGitHubTokenDisplay, 1000);
+    });
+  </script>
+
 </body>
 </html>
